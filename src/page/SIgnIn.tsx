@@ -1,7 +1,7 @@
 
 import styled from 'styled-components';
 import AuthForm from '../components/common/AuthForm';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import Envelop from '../components/common/Envelop';
 import { useState } from 'react';
 import postSignIn from '../apis/auth/postSignIn';
@@ -65,6 +65,9 @@ const SignIn = ({ isCompleteSingUp, setIsCompleteSingUp }:SingInProps) => {
         });
     };
 
+    if (localStorage.getItem("access_token")) {
+        return <Navigate to="/todo" replace={true} />;
+    }
     return (
         <Envelop>
             <>

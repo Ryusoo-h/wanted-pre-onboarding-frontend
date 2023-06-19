@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import Envelop from "../components/common/Envelop";
 import AuthForm from "../components/common/AuthForm";
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import postSignUp from "../apis/auth/postSignUp";
 import { useState } from "react";
 
@@ -64,7 +64,10 @@ const SignUp = ({ setIsCompleteSingUp }:SignUpProps) => {
             console.log('✅회원가입 에러:', e.message);
         })
     };
-    
+
+    if (localStorage.getItem("access_token")) {
+        return <Navigate to="/todo" replace={true} />;
+    }
     return (
         <Envelop>
             <Card>

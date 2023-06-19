@@ -2,7 +2,8 @@ import Todo from "./Todo";
 import { TodoType } from '../../types/todoList';
 import styled, { css } from "styled-components";
 import Title from "../common/Title";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 
 const TodoWrapper = styled.div`
@@ -103,6 +104,13 @@ type TodoListProps = {
 const TodoList = ({ todoList }:TodoListProps) => {
     const [ isAddTodoInputFocusing, setIsAddTodoInputFocusing ] = useState(false);
     const [ isTodoModifing, setIsTodoModifing ] = useState(false);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!localStorage.getItem("access_token")) {
+            navigate("/signin");
+        }
+    }, [isAddTodoInputFocusing, isTodoModifing])
 
     return (
         <TodoWrapper>

@@ -3,6 +3,7 @@ import Container from '../components/common/Container';
 import { useState } from 'react';
 import TodoList from '../components/todoList/TodoList';
 import { TodoType } from '../types/todoList';
+import { Navigate } from 'react-router-dom';
 
 const BackgroundImage = styled('div')<{path:string}>`
     position: absolute;
@@ -74,6 +75,11 @@ const List = () => {
             userId: 1
         }
     ]);
+
+    
+    if (!localStorage.getItem("access_token")) {
+        return <Navigate to="/signin" replace={true} />;
+    }
     return (
     <>
         <BackgroundImage path={`${process.env.PUBLIC_URL}/img/background.jpg`}/>

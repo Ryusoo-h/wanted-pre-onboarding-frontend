@@ -103,6 +103,7 @@ const Todo = ({ todo, isAddTodoInputFocusing, isTodoModifing, setIsTodoModifing,
     const onClickCancelButton = () => { // 수정 취소
         setIsModify(false);
         setIsTodoModifing(false);
+        setModifiedTodo(todo.todo);
         console.log('CancelButton 클릭됨');
     }
     const onClickCheckButton = () => { // 수정 완료
@@ -148,6 +149,11 @@ const Todo = ({ todo, isAddTodoInputFocusing, isTodoModifing, setIsTodoModifing,
             window.addEventListener('mousedown', handleExternalClick);
     };
 
+    const onChangeModifyInput = (e:React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        setModifiedTodo(value);
+    }
+
     useEffect(() => {
         setModifiedTodo(todo.todo);
     },[])
@@ -165,7 +171,12 @@ const Todo = ({ todo, isAddTodoInputFocusing, isTodoModifing, setIsTodoModifing,
             </CheckBoxWrapper>
             <TextWrapper className="flex">
                 {isModify ? (
-                    <input data-testid="modify-input" className="text" value={modifiedTodo} />
+                    <input 
+                        data-testid="modify-input"
+                        className="text"
+                        autoFocus={isModify}
+                        value={modifiedTodo}
+                        onChange={(e) => {onChangeModifyInput(e)}} />
                 ) : (
                     <label htmlFor={`checkbox${todo.id}`} className="text">{todo.todo}</label>
                 )}

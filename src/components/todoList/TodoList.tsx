@@ -5,6 +5,7 @@ import Title from "../common/Title";
 import { KeyboardEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import postNewTodo from "../../apis/todo/postNewTodo";
+import getAccessToken from "../../util/getAccessToken";
 
 const TodoWrapper = styled.div`
     width: 338px;
@@ -129,7 +130,7 @@ const TodoList = ({ todoList, setTodoList }:TodoListProps) => {
     }
 
     const onClickAddTodoButton = () => {
-        const token = localStorage.getItem("access_token");
+        const token = getAccessToken();
         if (!token) {
             navigate("/signin");
         } else {
@@ -152,10 +153,10 @@ const TodoList = ({ todoList, setTodoList }:TodoListProps) => {
         }
     }
     useEffect(() => {
-        if (!localStorage.getItem("access_token")) {
+        if (!getAccessToken()) {
             navigate("/signin");
-        }
-    }, [isAddTodoInputFocusing, isTodoModifing])
+        } 
+    }, [isAddTodoInputFocusing, isTodoModifing]);
 
     return (
         <TodoWrapper>

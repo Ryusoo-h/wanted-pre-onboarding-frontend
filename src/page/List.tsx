@@ -5,6 +5,7 @@ import TodoList from '../components/todoList/TodoList';
 import { TodoType } from '../types/todoList';
 import { useNavigate } from 'react-router-dom';
 import getTodoList from '../apis/todo/getTodoList';
+import getAccessToken from '../util/getAccessToken';
 
 const BackgroundImage = styled('div')<{path:string}>`
     position: absolute;
@@ -82,7 +83,7 @@ const List = () => {
     }
 
     useEffect(() => {
-        const token = localStorage.getItem("access_token");
+        const token = getAccessToken();
         if (!token) {
             return navigate("/signin");
         } else {

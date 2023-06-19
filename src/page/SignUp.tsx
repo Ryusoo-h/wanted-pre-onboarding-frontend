@@ -4,6 +4,7 @@ import AuthForm from "../components/common/AuthForm";
 import { Navigate, useNavigate } from 'react-router-dom';
 import postSignUp from "../apis/auth/postSignUp";
 import { useState } from "react";
+import getAccessToken from "../util/getAccessToken";
 
 const Card = styled.div`
     position: relative;
@@ -65,7 +66,7 @@ const SignUp = ({ setIsCompleteSingUp }:SignUpProps) => {
         })
     };
 
-    if (localStorage.getItem("access_token")) {
+    if (getAccessToken()) {
         return <Navigate to="/todo" replace={true} />;
     }
     return (

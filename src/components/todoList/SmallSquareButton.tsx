@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 const ButtonEl = styled('button')<{color:string, hoverColor:string}>`
     width: 34px;
@@ -9,6 +9,16 @@ const ButtonEl = styled('button')<{color:string, hoverColor:string}>`
     &:hover {
         background-color: ${props => props.hoverColor};
     }
+    ${props => 
+        props.disabled &&
+        css`
+        background-color: #EFEFEF;
+        color: #CDCDCD;
+        &:hover {
+            background-color: #EFEFEF;
+            color: #CDCDCD;
+        }
+    `}
 `;
 
 type ButtonProps = {
@@ -17,12 +27,13 @@ type ButtonProps = {
     onClickButton: () => void,
     children: JSX.Element,
     dataTestid?: string,
+    disabled?: boolean,
 }
 
 const SmallSquareButton = ({ color, hoverColor, onClickButton, children, ...rest }:ButtonProps) => {
     
     return (
-        <ButtonEl color={color} hoverColor={hoverColor} onClick={onClickButton} data-testid={rest.dataTestid}>
+        <ButtonEl color={color} hoverColor={hoverColor} onClick={onClickButton} data-testid={rest.dataTestid} disabled={rest.disabled} >
             {children}
         </ButtonEl>
     );

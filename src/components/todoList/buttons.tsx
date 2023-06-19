@@ -3,9 +3,10 @@ import SmallSquareButton from "./SmallSquareButton";
 type EachButtonProps = {
     dataTestid: string,
     onClickButton: () => void,
+    disabled?: boolean,
 }
 
-export const CheckButton = ({ dataTestid, onClickButton }:EachButtonProps) => {
+export const CheckButton = ({ dataTestid, onClickButton, ...rest }:EachButtonProps) => {
     
     return (
         <SmallSquareButton 
@@ -13,13 +14,14 @@ export const CheckButton = ({ dataTestid, onClickButton }:EachButtonProps) => {
             hoverColor="#14DDD1"
             onClickButton={onClickButton} 
             dataTestid={dataTestid}
+            disabled={rest.disabled}
         >
             <img src={`${process.env.PUBLIC_URL}/img/icon/ic-check.svg`} alt="check-icon" />
         </SmallSquareButton>
     );
 }
 
-export const CancelButton = ({ dataTestid, onClickButton }:EachButtonProps) => {
+export const CancelButton = ({ dataTestid, onClickButton, ...rest }:EachButtonProps) => {
 
     return (
         <SmallSquareButton
@@ -34,7 +36,7 @@ export const CancelButton = ({ dataTestid, onClickButton }:EachButtonProps) => {
 }
 
 
-export const ModifyButton = ({ dataTestid, onClickButton }:EachButtonProps) => {
+export const ModifyButton = ({ dataTestid, onClickButton, ...rest }:EachButtonProps) => {
     
     return (
         <SmallSquareButton
@@ -49,7 +51,7 @@ export const ModifyButton = ({ dataTestid, onClickButton }:EachButtonProps) => {
 }
 
 
-export const DeleteButton = ({ dataTestid, onClickButton }:EachButtonProps) => {
+export const DeleteButton = ({ dataTestid, onClickButton, ...rest }:EachButtonProps) => {
     
     return (
         <SmallSquareButton

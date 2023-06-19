@@ -6,6 +6,7 @@ import { KeyboardEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import postNewTodo from "../../apis/todo/postNewTodo";
 import getAccessToken from "../../util/getAccessToken";
+import onKeyPressEvent from "../../util/onKeyPressEvent";
 
 const TodoWrapper = styled.div`
     width: 338px;
@@ -205,8 +206,11 @@ const TodoList = ({ todoList, setTodoList }:TodoListProps) => {
                             onChange={(e) => {onChangeAddTodoInput(e)}}
                             onFocus={() => {setIsAddTodoInputFocusing(true)}}
                             onBlur={() => {setIsAddTodoInputFocusing(false)}}
-                            onKeyPress={(e) => {onKeyPressEnter(e)}}
-                            />
+                            onKeyPress={(e) => {onKeyPressEvent(e, "Enter", () => {
+                                onClickAddTodoButton();
+                                setNewTodo("");
+                            })}}
+                        />
                     </span>
                     <ButtonWrapper>
                         <AddButton data-testid="new-todo-add-button" className="font-net" onClick={onClickAddTodoButton} disabled={newTodo===""}>추가</AddButton>

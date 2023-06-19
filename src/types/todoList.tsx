@@ -6,6 +6,11 @@ export type TodoType = {
     userId: number
 }
 
+export type ErrorDataType = {
+    statusCode: number,
+    message: string
+}
+
 export type SignUpDataType = {
     statusCode: number,
     message: string,

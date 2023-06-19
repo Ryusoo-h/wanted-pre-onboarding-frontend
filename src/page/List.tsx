@@ -1,9 +1,10 @@
 import styled from 'styled-components';
 import Container from '../components/common/Container';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import TodoList from '../components/todoList/TodoList';
 import { TodoType } from '../types/todoList';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import getTodoList from '../apis/todo/getTodoList';
 
 const BackgroundImage = styled('div')<{path:string}>`
     position: absolute;
@@ -37,6 +38,15 @@ const MemoPad = styled.img`
     height: 756px;
 `;
 
+const Alert = styled.p`
+    position: absolute;
+    top: 80px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 338px;
+    text-align: center;
+    color: #FF6868;
+`;
 
 const RightButtonsWrapper = styled.div`
     flex-direction: column;
@@ -62,12 +72,34 @@ const LogoutButton = styled.button`
 `;
 
 const List = () => {
+    const [ todoList, setTodoList ] = useState<TodoType[]>([]);
+    const [ alert, setAlert ] = useState<string>("");
     const navigate = useNavigate();
 
     const onClickLogout = () => {
         localStorage.removeItem("access_token");
         navigate("/signin");
     }
+
+    useEffect(() => {
+        const token = localStorage.getItem("access_token");
+        if (!token) {
+            return navigate("/signin");
+        } else {
+            getTodoList(token)
+            .then ( response => {
+                if (Array.isArray(response)){
+                    setTodoList(response);
+                } else {
+                    setAlert("오류 : 데이터를 가져올 수 없습니다");
+                    console.log("getTodoList 에러", response);
+                }
+            }).catch ( e => {
+                console.log("todo list 가져오기 에러", e);
+            })
+        }
+    }, []);
+
     return (
     <>
         <BackgroundImage path={`${process.env.PUBLIC_URL}/img/background.jpg`}/>
@@ -75,6 +107,7 @@ const List = () => {
             <>
                 <MemoPad src={`${process.env.PUBLIC_URL}/img/memo-pad.svg`} alt="complete-Sign-Up-badge" />
                 <TodoList todoList={todoList} />
+                <Alert>{alert}</Alert>
                 <RightButtonsWrapper className="flex">
                     <div className="top">
 

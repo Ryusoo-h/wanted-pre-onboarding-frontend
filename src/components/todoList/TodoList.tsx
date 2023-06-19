@@ -16,7 +16,7 @@ const TodoWrapper = styled.div`
     transform: translateX(-50%);
 `;
 
-const CheckWrapper = styled.span`
+const CheckWrapper = styled.div`
     align-items: center;
     flex-shrink: 0;
     flex-grow: 0;
@@ -24,7 +24,7 @@ const CheckWrapper = styled.span`
     width: 37px;
     border-right: solid 3px var(--light-green);
 `;
-const ButtonWrapper = styled.span`
+const ButtonWrapper = styled.div`
     flex-shrink: 0;
     flex-grow: 0;
     width: 93px;
@@ -33,20 +33,9 @@ const ButtonWrapper = styled.span`
     align-items: center;
 `;
 
-const TodoListUl = styled.ul`
-    max-height: 450px;
-    overflow: auto;
-    -ms-overflow-style: none; 
-    scrollbar-width: none;
-    &::-webkit-scrollbar {
-        display: none;
-    }
-`;
-const TodoTopLi = styled.li`
-    position: sticky;
-    top: 0;
-    left: 0;
-    z-index: 2;
+const TodoTopBox = styled.div`
+    margin-top: 20px;
+    width: 100%;
     border-top: solid 3px var(--light-green);
     border-bottom: solid 3px var(--light-green);
     height: 54px;
@@ -61,10 +50,18 @@ const TodoTopLi = styled.li`
         color: #4D837F;
     }
 `;
-const TodoAddUl = styled.ul`
-    width: 100%;
+
+const TodoListUl = styled.ul`
+    max-height: 375px;
+    overflow: auto;
+    -ms-overflow-style: none; 
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+        display: none;
+    }
 `;
-const TodoAddLi = styled('li')<{isAddTodoInputFocusing:boolean, isTodoModifing:boolean}>`
+const TodoAddBox = styled('div')<{isAddTodoInputFocusing:boolean, isTodoModifing:boolean}>`
+    width: 100%;
     background-color: #fff;
     border-top: solid 1px var(--light-green);
     border-bottom: solid 3px var(--light-green);
@@ -172,12 +169,12 @@ const TodoList = ({ todoList, setTodoList }:TodoListProps) => {
     return (
         <TodoWrapper>
             <Title />
+            <TodoTopBox className="flex">
+                <CheckWrapper />
+                <span className="text">할일</span>
+                <ButtonWrapper />
+            </TodoTopBox>
             <TodoListUl>
-                <TodoTopLi className="flex">
-                    <CheckWrapper />
-                    <span className="text">할일</span>
-                    <ButtonWrapper />
-                </TodoTopLi>
                 {todoList.map((todo) => {
                     return (
                         <Todo 
@@ -192,8 +189,7 @@ const TodoList = ({ todoList, setTodoList }:TodoListProps) => {
                     )
                 })}
             </TodoListUl>
-            <TodoAddUl>
-                <TodoAddLi className="flex" isAddTodoInputFocusing={isAddTodoInputFocusing} isTodoModifing={isTodoModifing}>
+                <TodoAddBox className="flex" isAddTodoInputFocusing={isAddTodoInputFocusing} isTodoModifing={isTodoModifing}>
                     <CheckWrapper />
                     <span className="text flex">
                         <label htmlFor="add-todo" style={{display: "none"}}>TODO 추가하기</label>
@@ -215,8 +211,7 @@ const TodoList = ({ todoList, setTodoList }:TodoListProps) => {
                     <ButtonWrapper>
                         <AddButton data-testid="new-todo-add-button" className="font-net" onClick={onClickAddTodoButton} disabled={newTodo===""}>추가</AddButton>
                     </ButtonWrapper>
-                </TodoAddLi>
-            </TodoAddUl>
+                </TodoAddBox>
         </TodoWrapper>
     );
 };

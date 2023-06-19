@@ -1,0 +1,39 @@
+body {
+    margin: 0;
+    overflow-wrap: break-word;
+}
+
+:lang(ko) { word-break: keep-all; }
+
+section, div, label, input, p, button, h1, h2, a {
+    box-sizing: border-box;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+a {
+    text-decoration: none;
+}
+
+[class] {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+[class]::before,
+[class]::after { box-sizing: border-box; }
+[class]:where(ol, ul) { list-style: none; }
+[class]:where(button, fieldset, iframe, input, select, textarea) { border: 0; }
+[class]:where(button, dialog, input, mark, meter, progress) { background-color: transparent; }
+[class]:where(table) {
+border: 0;
+border-collapse: collapse;
+border-spacing: 0;
+}
+[class]:where(button, input, meter, progress, select, textarea) {
+-webkit-appearance: none;
+appearance: none;
+}

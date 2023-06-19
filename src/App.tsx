@@ -1,25 +1,22 @@
-import React from 'react';
-import logo from './logo.svg';
+import './reset.css';
 import './App.css';
 
+import { Route, Routes } from 'react-router-dom';
+import SignUp from './page/SignUp';
+import SignIn from './page/SIgnIn';
+import List from './page/List';
+import { useState } from 'react';
+
+
 function App() {
+  const [isCompleteSingUp, setIsCompleteSingUp] = useState(false);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Routes>
+      <Route path="/" element={<List />} />
+      <Route path="/signup" element={<SignUp setIsCompleteSingUp={setIsCompleteSingUp} />} />
+      <Route path="/signin" element={<SignIn isCompleteSingUp={isCompleteSingUp} setIsCompleteSingUp={setIsCompleteSingUp} />} />
+    </Routes>
   );
 }
 

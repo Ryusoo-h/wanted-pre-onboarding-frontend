@@ -71,7 +71,7 @@ const SignIn = ({ isCompleteSingUp, setIsCompleteSingUp }:SingInProps) => {
             {isCompleteSingUp &&
                 <Badge src={`${process.env.PUBLIC_URL}/img/completeSignUp.svg`} alt="complete-Sign-Up-badge" />
             }
-            <AuthForm dataTestid="signup-button" onFormSubmit={onFormSubmit} message={message}>로그인</AuthForm>
+            <AuthForm dataTestid="signin-button" onFormSubmit={onFormSubmit} message={message}>로그인</AuthForm>
             <LinkToSignUp to="/signup" className="font-net">회원가입</LinkToSignUp>
             </>
         </Envelop>

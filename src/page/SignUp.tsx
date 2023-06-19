@@ -70,7 +70,7 @@ const SignUp = ({ setIsCompleteSingUp }:SignUpProps) => {
             <Card>
                 <CardWrapper>
                     <Welcome className="font-net">Welcome!</Welcome>
-                    <AuthForm dataTestid="signin-button" color="#EBFBE8" onFormSubmit={onFormSubmit} message={message}>회원가입</AuthForm>
+                    <AuthForm dataTestid="signup-button" color="#EBFBE8" onFormSubmit={onFormSubmit} message={message}>회원가입</AuthForm>
                 </CardWrapper>
             </Card>
         </Envelop>

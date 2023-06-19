@@ -3,6 +3,8 @@ import { useEffect, useRef, useState } from 'react';
 import { TodoType } from '../../types/todoList';
 import styled, { css } from 'styled-components';
 import { CancelButton, CheckButton, DeleteButton, ModifyButton } from './buttons';
+import deleteTodo from '../../apis/todo/deleteTodo';
+import getAccessToken from '../../util/getAccessToken';
 
 const TodoLi = styled('li')<{checked:boolean, isAddTodoInputFocusing:boolean, isTodoModifing:boolean, isModify: boolean}>`
     border-bottom: solid 1px var(--light-green);
@@ -86,8 +88,10 @@ type TodoProps = {
     isAddTodoInputFocusing: boolean,
     isTodoModifing: boolean,
     setIsTodoModifing: (isTodoModifing:boolean) => void,
+    todoList: TodoType[],
+    setTodoList: (todoList:TodoType[]) => void,
 }
-const Todo = ({ todo, isAddTodoInputFocusing, isTodoModifing, setIsTodoModifing }:TodoProps) => {
+const Todo = ({ todo, isAddTodoInputFocusing, isTodoModifing, setIsTodoModifing, todoList, setTodoList }:TodoProps) => {
     const [isModify, setIsModify] = useState(false);
     const [modifiedTodo, setModifiedTodo] = useState('');
     const thisTodo = useRef(null);
@@ -115,6 +119,19 @@ const Todo = ({ todo, isAddTodoInputFocusing, isTodoModifing, setIsTodoModifing 
         console.log('ModifyButton 클릭됨');
     }
     const onClickDeleteButton = () => { // 삭제
+        const token = getAccessToken();
+        const id = todo.id;
+        if (token) {
+            deleteTodo(token, id)
+            .then ( response => {
+                if (Array.isArray(response)) {
+                    const newTodoList = todoList.filter(todo => todo.id !== id);
+                    setTodoList(newTodoList);
+                }
+            }).catch ( e => {
+                console.log('todo 삭제 에러: ', e);
+            })
+        }
         console.log('DeleteButton 클릭됨');
     }
 

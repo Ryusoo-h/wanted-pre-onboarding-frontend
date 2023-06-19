@@ -175,6 +175,8 @@ const TodoList = ({ todoList, setTodoList }:TodoListProps) => {
                             isAddTodoInputFocusing={isAddTodoInputFocusing}
                             isTodoModifing={isTodoModifing}
                             setIsTodoModifing={setIsTodoModifing}
+                            todoList={todoList}
+                            setTodoList={setTodoList}
                         />
                     )
                 })}

@@ -111,6 +111,16 @@ const AddButton = styled.button`
     &:hover {
         background-color: #14DDD1;
     }
+    ${props =>
+        props.disabled &&
+        css`
+            background-color: #EFEFEF;
+            color: #CDCDCD;
+            &:hover {
+                background-color: #EFEFEF;
+                color: #CDCDCD;
+            }
+    `}
 `;
 
 type TodoListProps = {
@@ -199,7 +209,7 @@ const TodoList = ({ todoList, setTodoList }:TodoListProps) => {
                             />
                     </span>
                     <ButtonWrapper>
-                        <AddButton data-testid="new-todo-add-button" className="font-net" onClick={onClickAddTodoButton}>추가</AddButton>
+                        <AddButton data-testid="new-todo-add-button" className="font-net" onClick={onClickAddTodoButton} disabled={newTodo===""}>추가</AddButton>
                     </ButtonWrapper>
                 </TodoAddLi>
             </TodoAddUl>

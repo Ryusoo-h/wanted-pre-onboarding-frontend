@@ -26,6 +26,10 @@ body {
     background: linear-gradient(to bottom, #D4D0FF 0%, #B9C8FF 43.23%, #D6E9FC 100%);
 }
 
+input {
+    font-family: 'GmarketSansMedium';
+}
+
 .font-basic {
     font-family: 'GmarketSansMedium';
 }

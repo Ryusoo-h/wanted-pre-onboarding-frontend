@@ -5,7 +5,7 @@ body {
 
 :lang(ko) { word-break: keep-all; }
 
-section, div, label, input, p, button, h1, h2, a {
+section, div, label, input, p, button, h1, h2, a, span, ul, li {
     box-sizing: border-box;
 }
 

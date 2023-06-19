@@ -2,6 +2,8 @@ import styled from "styled-components";
 import Envelop from "../components/common/Envelop";
 import AuthForm from "../components/common/AuthForm";
 import { useNavigate } from 'react-router-dom';
+import postSignUp from "../apis/auth/postSignUp";
+import { useState } from "react";
 
 const Card = styled.div`
     position: relative;
@@ -42,13 +44,25 @@ type SignUpProps = {
 }
 const SignUp = ({ setIsCompleteSingUp }:SignUpProps) => {
     const navigate = useNavigate();
+    const [message, setMessage] = useState('');
 
-
-    const onSubmit = () => {
-        if (true) { // TODO : 회원가입 성공하면
-            navigate('/signin');
-            setIsCompleteSingUp(true);
-        }
+    const onFormSubmit = (email:string, password:string) => {
+        postSignUp(email, password)
+        .then(response => {
+            switch (response.statusCode) {
+                case 201:
+                    navigate('/signin');
+                    setIsCompleteSingUp(true);
+                    break;
+                case 400:
+                    setMessage(response.message);
+                    break;
+                default:
+                    console.log('✅postSignUp API 에러: ', response);
+            }
+        }).catch(e => {
+            console.log('✅회원가입 에러:', e.message);
+        })
     };
     
     return (
@@ -56,7 +70,7 @@ const SignUp = ({ setIsCompleteSingUp }:SignUpProps) => {
             <Card>
                 <CardWrapper>
                     <Welcome className="font-net">Welcome!</Welcome>
-                    <AuthForm dataTestid="signin-button" color="#EBFBE8" onSubmit={onSubmit}>회원가입</AuthForm>
+                    <AuthForm dataTestid="signin-button" color="#EBFBE8" onFormSubmit={onFormSubmit} message={message}>회원가입</AuthForm>
                 </CardWrapper>
             </Card>
         </Envelop>

@@ -1,3 +1,4 @@
+
 import styled, { css } from "styled-components";
 
 const ButtonEl = styled.button`
@@ -8,6 +9,7 @@ const ButtonEl = styled.button`
     line-height: 24px;
     background-color: var(--green);
     color: #fff;
+    pointer-event: none;
     ${props =>
         props.disabled &&
         css`
@@ -17,20 +19,25 @@ const ButtonEl = styled.button`
 `;
 
 type ButtonProps = {
-    children: JSX.Element;
-    disabled?: boolean;
-    dataTestid?: string;
-    onSubmit?: () => void;
+    children: JSX.Element,
+    dataTestid?: string,
+    disabled?: boolean,
+    onFormSubmit?: (email:string, password:string) => void,
+    email?:string,
+    password?:string
 }
 
 const Button = ({ children, ...rest }:ButtonProps) => {
 
     return(
-        <ButtonEl 
+        <ButtonEl
             data-testid={rest.dataTestid} 
             className="font-net" 
-            disabled={rest.disabled} 
-            onClick={() => {rest.onSubmit && rest.onSubmit();}}
+            disabled={rest.disabled}
+            onClick={(e) => {
+                e.preventDefault();
+                rest.onFormSubmit && rest.email && rest.password && rest.onFormSubmit(rest.email, rest.password);
+            }}
         >
             { children }
         </ButtonEl>

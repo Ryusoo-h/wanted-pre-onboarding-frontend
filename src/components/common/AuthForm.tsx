@@ -39,7 +39,7 @@ const AuthFormWrapper = styled.div`
 `;
 
 const AlertWrapper = styled.div`
-    margin: 40px 0 10px;
+    margin: 14px 0 10px;
 `;
 const Alert = styled.p`
     font-size: 16px;
@@ -49,16 +49,22 @@ const Alert = styled.p`
     &.is-valid {
         color: var(--green);
     }
+    &.red {
+        text-align: center;
+        color: #FF6868;
+        margin-bottom: 10px;
+    }
 `;
 
 type AuthFormProps = {
-    dataTestid: string;
-    children: string;
-    color?: string;
-    onSubmit: () => void;
+    dataTestid: string,
+    children: string,
+    onFormSubmit: (email:string, password:string) => void,
+    message: string,
+    color?: string,
 }
 
-const AuthForm = ({ dataTestid, children, onSubmit, ...rest }:AuthFormProps) => {
+const AuthForm = ({ dataTestid, children, onFormSubmit, message, ...rest }:AuthFormProps) => {
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [isEmailValid, setIsEmailValid] = useState<boolean>(false);
@@ -89,12 +95,13 @@ const AuthForm = ({ dataTestid, children, onSubmit, ...rest }:AuthFormProps) => 
                 <input data-testid="email-input" type="text" id="email" className="font-basic" autoFocus={true} 
                     value={email} onChange={(e) => {onChangeEmailInput(e)}}
                 />
-                <label htmlFor="password">비밀번호</label>
-                <input data-testid="password-input" type="password" id="password" className="font-basic" 
+                <label htmlFor="new-password">비밀번호</label>
+                <input data-testid="password-input" type="password" id="new-password" className="font-basic" 
                     value={password}  onChange={(e) => {onChangePasswordInput(e)}}
                 />
             </AuthFormWrapper>
                 <AlertWrapper>
+                    <Alert className="red">{message}</Alert>
                     <Alert className={isEmailValid ? "is-valid" : ""}>
                         {isEmailValid ? '✅' : '⬜'} 이메일 양식을 지켜주세요
                     </Alert>
@@ -102,7 +109,15 @@ const AuthForm = ({ dataTestid, children, onSubmit, ...rest }:AuthFormProps) => 
                         {isPasswordValid ? '✅' : '⬜'} 비밀번호는 8자 이상 입력해주세요
                     </Alert>
                 </AlertWrapper>
-                <Button dataTestid={dataTestid} disabled={!isAllValid} onSubmit={onSubmit}><>{children}</></Button>
+                <Button
+                    dataTestid={dataTestid}
+                    disabled={!isAllValid}
+                    onFormSubmit={onFormSubmit}
+                    email={email}
+                    password={password}
+                >
+                    <>{children}</>
+                </Button>
         </Form>
     );
 };

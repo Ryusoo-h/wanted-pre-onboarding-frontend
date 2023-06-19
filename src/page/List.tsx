@@ -106,7 +106,7 @@ const List = () => {
         <Container>
             <>
                 <MemoPad src={`${process.env.PUBLIC_URL}/img/memo-pad.svg`} alt="complete-Sign-Up-badge" />
-                <TodoList todoList={todoList} />
+                <TodoList todoList={todoList} setTodoList={setTodoList} />
                 <Alert>{alert}</Alert>
                 <RightButtonsWrapper className="flex">
                     <div className="top">

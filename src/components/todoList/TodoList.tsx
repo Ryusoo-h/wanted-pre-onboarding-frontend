@@ -2,9 +2,9 @@ import Todo from "./Todo";
 import { TodoType } from '../../types/todoList';
 import styled, { css } from "styled-components";
 import Title from "../common/Title";
-import { useEffect, useState } from "react";
+import { KeyboardEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import postNewTodo from "../../apis/todo/postNewTodo";
 
 const TodoWrapper = styled.div`
     width: 338px;
@@ -32,14 +32,25 @@ const ButtonWrapper = styled.span`
 `;
 
 const TodoListUl = styled.ul`
-    max-height: 500px;
+    max-height: 450px;
+    overflow: auto;
+    -ms-overflow-style: none; 
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+        display: none;
+    }
 `;
 const TodoTopLi = styled.li`
+    position: sticky;
+    top: 0;
+    left: 0;
+    z-index: 2;
     border-top: solid 3px var(--light-green);
     border-bottom: solid 3px var(--light-green);
     height: 54px;
     align-items: stretch;
     font-size: 20px;
+    background-color: #FFFBF8;
     .text {
         align-items: center;
         flex-grow: 1;
@@ -48,8 +59,12 @@ const TodoTopLi = styled.li`
         color: #4D837F;
     }
 `;
+const TodoAddUl = styled.ul`
+    width: 100%;
+`;
 const TodoAddLi = styled('li')<{isAddTodoInputFocusing:boolean, isTodoModifing:boolean}>`
     background-color: #fff;
+    border-top: solid 1px var(--light-green);
     border-bottom: solid 3px var(--light-green);
     height: 52px;
     align-items: stretch;
@@ -99,13 +114,43 @@ const AddButton = styled.button`
 
 type TodoListProps = {
     todoList: TodoType[],
+    setTodoList: (todoList: TodoType[]) => void;
 }
 
-const TodoList = ({ todoList }:TodoListProps) => {
+const TodoList = ({ todoList, setTodoList }:TodoListProps) => {
     const [ isAddTodoInputFocusing, setIsAddTodoInputFocusing ] = useState(false);
     const [ isTodoModifing, setIsTodoModifing ] = useState(false);
+    const [ newTodo, setNewTodo ] = useState<string>("");
     const navigate = useNavigate();
 
+    const onChangeAddTodoInput = (e:React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        setNewTodo(value);
+    }
+
+    const onClickAddTodoButton = () => {
+        const token = localStorage.getItem("access_token");
+        if (!token) {
+            navigate("/signin");
+        } else {
+            postNewTodo(token, newTodo)
+            .then ( response => {
+                if (!Array.isArray(response)) {
+                    setTodoList(todoList.concat(response));
+                    setNewTodo("");
+                }
+            }).catch ( e => {
+                console.log('새 Todo 등록 에러: ', e);
+            })
+        }
+    }
+
+    const onKeyPressEnter = (e: KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') {
+            onClickAddTodoButton();
+            setNewTodo("");
+        }
+    }
     useEffect(() => {
         if (!localStorage.getItem("access_token")) {
             navigate("/signin");
@@ -132,7 +177,8 @@ const TodoList = ({ todoList }:TodoListProps) => {
                         />
                     )
                 })}
-
+            </TodoListUl>
+            <TodoAddUl>
                 <TodoAddLi className="flex" isAddTodoInputFocusing={isAddTodoInputFocusing} isTodoModifing={isTodoModifing}>
                     <CheckWrapper />
                     <span className="text flex">
@@ -142,15 +188,18 @@ const TodoList = ({ todoList }:TodoListProps) => {
                             type="text"
                             id="add-todo"
                             placeholder="새 할일 입력하기"
+                            value={newTodo}
+                            onChange={(e) => {onChangeAddTodoInput(e)}}
                             onFocus={() => {setIsAddTodoInputFocusing(true)}}
                             onBlur={() => {setIsAddTodoInputFocusing(false)}}
+                            onKeyPress={(e) => {onKeyPressEnter(e)}}
                             />
                     </span>
                     <ButtonWrapper>
-                        <AddButton data-testid="new-todo-add-button" className="font-net">추가</AddButton>
+                        <AddButton data-testid="new-todo-add-button" className="font-net" onClick={onClickAddTodoButton}>추가</AddButton>
                     </ButtonWrapper>
                 </TodoAddLi>
-            </TodoListUl>
+            </TodoAddUl>
         </TodoWrapper>
     );
 };

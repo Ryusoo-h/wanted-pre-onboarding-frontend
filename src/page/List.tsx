@@ -3,7 +3,7 @@ import Container from '../components/common/Container';
 import { useState } from 'react';
 import TodoList from '../components/todoList/TodoList';
 import { TodoType } from '../types/todoList';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 const BackgroundImage = styled('div')<{path:string}>`
     position: absolute;
@@ -33,52 +33,40 @@ const BackgroundImage = styled('div')<{path:string}>`
 
 const MemoPad = styled.img`
     margin-top: -36px;
+    width: 430px;
+    height: 756px;
+`;
+
+
+const RightButtonsWrapper = styled.div`
+    flex-direction: column;
+    justify-content: space-between;
+    position: absolute;
+    top: 0;
+    right: -32px;
+    transform: translateX(100%);
+    height: 720px;
+    padding: 20px 0 125px;
+`;
+
+const LogoutButton = styled.button`
+    width: 66px;
+    height: 66px;
+    border-radius: 33px;
+    background-color: #7B81A1;
+    box-shadow: 0px 2px 8px rgba(110, 106, 150, 0.24);
+    transition: all 0.2s ease-in;
+    &:hover {
+        background-color: #5162B9;
+    }
 `;
 
 const List = () => {
-    // TODO : 나중에 값 받아와서 저장 (지금은 테스트를 위해 가짜값 넣음)
-    const [ todoList, setTodoList ] = useState<TodoType[]>([
-        {
-            id: 1,
-            todo: "맛있는 저녁 먹기",
-            isCompleted: true,
-            userId: 1
-        },
-        {
-            id: 2,
-            todo: "디자인 마무리하기",
-            isCompleted: true,
-            userId: 1
-        },
-        {
-            id: 3,
-            todo: "UI 구현하기",
-            isCompleted: false,
-            userId: 1
-        },
-        {
-            id: 4,
-            todo: "로그인 구현하기",
-            isCompleted: false,
-            userId: 1
-        },
-        {
-            id: 5,
-            todo: "TODO 구현하기",
-            isCompleted: false,
-            userId: 1
-        },
-        {
-            id: 6,
-            todo: "2시간마다 일어나서 허리 펴주기! 지금부터 펴볼까?!",
-            isCompleted: false,
-            userId: 1
-        }
-    ]);
+    const navigate = useNavigate();
 
-    
-    if (!localStorage.getItem("access_token")) {
-        return <Navigate to="/signin" replace={true} />;
+    const onClickLogout = () => {
+        localStorage.removeItem("access_token");
+        navigate("/signin");
     }
     return (
     <>
@@ -87,6 +75,16 @@ const List = () => {
             <>
                 <MemoPad src={`${process.env.PUBLIC_URL}/img/memo-pad.svg`} alt="complete-Sign-Up-badge" />
                 <TodoList todoList={todoList} />
+                <RightButtonsWrapper className="flex">
+                    <div className="top">
+
+                    </div>
+                    <div className="bottom">
+                        <LogoutButton onClick={onClickLogout}>
+                            <img src={`${process.env.PUBLIC_URL}/img/icon/ic-logout.svg`} alt="logout-icon" />
+                        </LogoutButton>
+                    </div>
+                </RightButtonsWrapper>
             </>
         </Container>
     </>

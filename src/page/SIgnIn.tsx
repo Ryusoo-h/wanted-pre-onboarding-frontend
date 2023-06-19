@@ -44,21 +44,24 @@ const SignIn = ({ isCompleteSingUp, setIsCompleteSingUp }:SingInProps) => {
     const onFormSubmit = (email:string, password:string) => {
         postSignIn(email, password)
         .then( response => {
-            if (response.status === 200) {
-                localStorage.setItem("access_token", response.data.access_token);
+            if (response.statusCode === 200 && response.access_token) {
+                localStorage.setItem("access_token", response.access_token);
                 navigate('/');
                 setIsCompleteSingUp(false);
-                return;
-            }
-            switch (response.statusCode) {
-                case 401:
-                    setMessage("비밀번호가 올바르지 않습니다.")
-                    break;
-                case 404:
-                    setMessage(response.message);
-                    break;
-                default:
-                    console.log('✅postSignIn API 에러: ', response);
+            } else {
+                switch (response.statusCode) {
+                    case 401:
+                        setMessage("비밀번호가 올바르지 않습니다.")
+                        break;
+                    case 404:
+                        if (response.message) {
+                            setMessage(response.message);
+                        }
+                        break;
+                    default:
+                        setMessage("로그인에 실패했습니다.");
+                        console.log('✅postSignIn API 에러: ', response);
+                }
             }
         }).catch( e => {
             console.log('✅로그인 에러:', e.message);

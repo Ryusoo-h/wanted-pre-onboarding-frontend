@@ -16,9 +16,9 @@ const BackgroundImage = styled('div')<{path:string}>`
     background-size: 1920px 980px;
     background-repeat: no-repeat;
     animation-duration: 2.5s;
-    animation-name: smaller;
+    animation-name: zoom-out;
     transition-timing-function: ease-out;
-    @keyframes smaller {
+    @keyframes zoom-out {
         from {
             opacity: 0;
             background-size: 2016px 1029px;

@@ -1,60 +1,7 @@
-import styled, { css } from "styled-components";
+
 import Button from "./Button";
 import { useState, useEffect } from 'react';
-
-
-const Form = styled.form`
-    margin: 40px auto 10px;
-    width: 336px;
-`;
-
-const AuthFormWrapper = styled.div`
-    display: grid;
-    grid-template: repeat(2, 46px) / 100px 236px;
-    align-items: stretch;
-    border-top: solid 2px var(--light-green);
-    label {
-        font-size: 20px;
-        border-bottom: solid 2px var(--light-green);
-        border-right: solid 2px var(--light-green);
-        line-height: 46px;
-        padding: 0 10px;
-    }
-    input {
-        height: 100%;
-        font-size: 20px;
-        border: none;
-        border-bottom: solid 2px var(--light-green);
-        background-color: unset;
-        padding: 0 10px;
-        &:focus {
-            background-color: #fff;
-            ${props => props.color &&
-                css`
-                background-color: ${props.color};
-            `}
-            outline: none;
-        }
-    }
-`;
-
-const AlertWrapper = styled.div`
-    margin: 14px 0 10px;
-`;
-const Alert = styled.p`
-    font-size: 16px;
-    line-height: 20px;
-    height: 20px;
-    color: #33333;
-    &.is-valid {
-        color: var(--green);
-    }
-    &.red {
-        text-align: center;
-        color: #FF6868;
-        margin-bottom: 10px;
-    }
-`;
+import * as S from './AthForm.style';
 
 type AuthFormProps = {
     dataTestid: string,
@@ -87,8 +34,8 @@ const AuthForm = ({ dataTestid, children, onFormSubmit, message, ...rest }:AuthF
     }
 
     return(
-        <Form>
-            <AuthFormWrapper color={rest.color}>
+        <S.Form>
+            <S.AuthFormWrapper color={rest.color}>
                 <label htmlFor="email">이메일</label>
                 <input data-testid="email-input" type="text" id="email" className="font-basic" autoFocus={true} 
                     value={email} onChange={(e) => {onChangeEmailInput(e)}}
@@ -97,16 +44,16 @@ const AuthForm = ({ dataTestid, children, onFormSubmit, message, ...rest }:AuthF
                 <input data-testid="password-input" type="password" id="new-password" className="font-basic" 
                     value={password}  onChange={(e) => {onChangePasswordInput(e)}}
                 />
-            </AuthFormWrapper>
-                <AlertWrapper>
-                    <Alert className="red">{message}</Alert>
-                    <Alert className={isEmailValid ? "is-valid" : ""}>
+            </S.AuthFormWrapper>
+                <S.AlertWrapper>
+                    <S.Alert className="red">{message}</S.Alert>
+                    <S.Alert className={isEmailValid ? "is-valid" : ""}>
                         {isEmailValid ? '✅' : '⬜'} 이메일 양식을 지켜주세요
-                    </Alert>
-                    <Alert className={isPasswordValid ? "is-valid" : ""}>
+                    </S.Alert>
+                    <S.Alert className={isPasswordValid ? "is-valid" : ""}>
                         {isPasswordValid ? '✅' : '⬜'} 비밀번호는 8자 이상 입력해주세요
-                    </Alert>
-                </AlertWrapper>
+                    </S.Alert>
+                </S.AlertWrapper>
                 <Button
                     dataTestid={dataTestid}
                     disabled={!isAllValid}
@@ -116,7 +63,7 @@ const AuthForm = ({ dataTestid, children, onFormSubmit, message, ...rest }:AuthF
                 >
                     <>{children}</>
                 </Button>
-        </Form>
+        </S.Form>
     );
 };
 

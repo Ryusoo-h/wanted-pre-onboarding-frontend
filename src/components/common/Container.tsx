@@ -1,11 +1,5 @@
-import styled from "styled-components";
 
-const ContainerWrapper = styled.section`
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-`;
+import * as S from './Container.style';
 
 type ContainerType = {
     children: JSX.Element;
@@ -14,9 +8,9 @@ type ContainerType = {
 const Container = ({ children }:ContainerType) => {
 
     return (
-        <ContainerWrapper>
+        <S.ContainerWrapper>
             {children}
-        </ContainerWrapper>
+        </S.ContainerWrapper>
     );
 }
 

@@ -1,4 +1,4 @@
-import styled from "styled-components";
+
 import Envelop from "../components/common/Envelop";
 import AuthForm from "../components/common/AuthForm";
 import { Navigate, useNavigate } from 'react-router-dom';
@@ -6,12 +6,7 @@ import postSignUp from "../apis/auth/postSignUp";
 import { useState } from "react";
 import getAccessToken from "../util/getAccessToken";
 import Card from "../components/common/Card";
-
-const Welcome = styled.h2`
-    text-align: center;
-    font-size: 30px;
-    color: #FF7373;
-`;
+import * as S from "./SignUp.style";
 
 type SignUpProps = {
     setIsCompleteSingUp: (isComplete:boolean) => void,
@@ -47,7 +42,7 @@ const SignUp = ({ setIsCompleteSingUp }:SignUpProps) => {
         <Envelop>
             <Card degree={-2} translateX={10} translateY={-7}>
                 <>
-                    <Welcome className="font-net">Welcome!</Welcome>
+                    <S.Welcome className="font-net">Welcome!</S.Welcome>
                     <AuthForm dataTestid="signup-button" color="#EBFBE8" onFormSubmit={onFormSubmit} message={message}>회원가입</AuthForm>
                 </>
             </Card>

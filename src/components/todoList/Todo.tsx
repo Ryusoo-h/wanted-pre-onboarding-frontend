@@ -1,106 +1,12 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { TodoType } from '../../types/todoList';
-import styled, { css } from 'styled-components';
 import { CancelButton, CheckButton, DeleteButton, DeleteCancelButton, DeleteConfirmButton, ModifyButton } from './buttons';
 import deleteTodo from '../../apis/todo/deleteTodo';
 import getAccessToken from '../../util/getAccessToken';
 import putTodo from '../../apis/todo/putTodo';
 import onKeyPressEvent from '../../util/onKeyPressEvent';
-
-const TodoLi = styled('li')<{checked:boolean, isAddTodoInputFocusing:boolean, isTodoModifing:boolean, isModify:boolean, isDelete:boolean}>`
-    border-bottom: solid 1px var(--light-green);
-    box-sizing: border-box;
-    min-height: 50px;
-    align-items: stretch;
-    font-size: 20px;
-    transition: opacity 0.2s ease-in-out;
-    ${props => props.checked &&
-        css`
-            background-color: #EBFBE8;
-    `}
-    ${props => (props.isAddTodoInputFocusing || props.isTodoModifing) &&
-        css`
-            filter: opacity(0.4);
-            pointer-events: none;
-    `}
-    ${props => props.isModify &&
-        css`
-            background-color: #fff;
-            filter: opacity(1);
-            pointer-events: auto;
-            box-shadow: 0px 2px 12px rgba(110, 106, 150, 0.5);
-            position: relative;
-            z-index: 2;
-    `}
-    ${props => props.isDelete &&
-        css`
-            box-shadow: 0px 2px 16px rgba(255, 36, 36, 0.69);
-            border-top: solid 3px #FC7171;
-            border-bottom: solid 1px #ddd;
-            transform: translateY(-2px);
-            span {
-                border: none;
-                &:not(:last-child) {
-                    border-right: solid 3px #ddd;
-                }
-            }
-    `}
-`;
-
-const CheckBoxWrapper = styled.span`
-    flex-shrink: 0;
-    flex-grow: 0;
-    align-items: stretch;
-    padding: 8px 4px;
-    width: 37px;
-    border-right: solid 3px var(--light-green);
-`;
-const CheckBox = styled('input')<{path:string}>`
-    width: 26px;
-    height: 100%;
-    position: relative;
-    &:checked::after {
-        content: '';
-        display: block;
-        width: 26px;
-        height: 26px;
-        background-image: url(${props => props.path});
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-    }
-`;
-
-const TextWrapper = styled.span`
-    align-items: center;
-    flex-grow: 1;
-    .text {
-        width: 100%;
-        padding: 10px 8px 6px;
-        display: inline-block;
-        line-height: 140%;
-        word-spacing: -2px;
-        font-size: 20px;
-        border: none;
-        outline: none;
-    }
-`;
-
-const ButtonWrapper = styled.span`
-    flex-shrink: 0;
-    flex-grow: 0;
-    padding: 0 8px;
-    border-left: solid 3px var(--light-green);
-    align-items: center;
-    gap: 6px;
-`;
-
-const BinIcon = styled.img`
-    width: 26px;
-    height: 30px;
-`;
+import * as S from './Todo.style';
 
 type TodoProps = {
     todo: TodoType,
@@ -219,7 +125,7 @@ const Todo = ({ todo, isAddTodoInputFocusing, isTodoModifing, setIsTodoModifing,
     }, [modifiedTodoCheck]);
 
     return (
-        <TodoLi 
+        <S.TodoLi 
             ref={thisTodo}
             className="flex"
             checked={todo.isCompleted}
@@ -228,11 +134,11 @@ const Todo = ({ todo, isAddTodoInputFocusing, isTodoModifing, setIsTodoModifing,
             isModify={isModify}
             isDelete={isDelete}
         >
-            <CheckBoxWrapper className="flex">
+            <S.CheckBoxWrapper className="flex">
                 {isDelete ? (
-                    <BinIcon src={`${process.env.PUBLIC_URL}/img/icon/ic-bin.svg`} alt="bin-icon" />
+                    <S.BinIcon src={`${process.env.PUBLIC_URL}/img/icon/ic-bin.svg`} alt="bin-icon" />
                 ) : (
-                    <CheckBox
+                    <S.CheckBox
                         id={`checkbox${todo.id}`}
                         type="checkbox"
                         checked={modifiedTodoCheck}
@@ -241,8 +147,8 @@ const Todo = ({ todo, isAddTodoInputFocusing, isTodoModifing, setIsTodoModifing,
                         path={`${process.env.PUBLIC_URL}/img/icon/ic-check-green.svg`}
                     />
                 )}
-            </CheckBoxWrapper>
-            <TextWrapper className="flex">
+            </S.CheckBoxWrapper>
+            <S.TextWrapper className="flex">
                 {isModify ? (
                     isDelete ? (
                         <> {/* 삭제모드 input */}
@@ -271,8 +177,8 @@ const Todo = ({ todo, isAddTodoInputFocusing, isTodoModifing, setIsTodoModifing,
                 ) : (
                     <label htmlFor={`checkbox${todo.id}`} className="text" onClick={(e)=> e.preventDefault()}>{todo.todo}</label>
                 )}
-            </TextWrapper>
-            <ButtonWrapper className="flex">
+            </S.TextWrapper>
+            <S.ButtonWrapper className="flex">
                 {isModify ? (
                     isDelete ? (
                         <> {/* 삭제모드 버튼들 */}
@@ -291,9 +197,8 @@ const Todo = ({ todo, isAddTodoInputFocusing, isTodoModifing, setIsTodoModifing,
                         <DeleteButton dataTestid="delete-mode-button" onClickButton={onClickDeleteButton} />
                     </>
                 )}
-            </ButtonWrapper>
-            
-        </TodoLi>
+            </S.ButtonWrapper>
+        </S.TodoLi>
     );
 };
 

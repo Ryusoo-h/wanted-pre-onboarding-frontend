@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+
 import Container from '../components/common/Container';
 import { useEffect, useState } from 'react';
 import TodoList from '../components/todoList/TodoList';
@@ -6,71 +6,7 @@ import { TodoType } from '../types/todoList';
 import { useNavigate } from 'react-router-dom';
 import getTodoList from '../apis/todo/getTodoList';
 import getAccessToken from '../util/getAccessToken';
-
-const BackgroundImage = styled('div')<{path:string}>`
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 100vw;
-    height: 100vh;
-    background-image: url(${props => props.path});
-    background-position: center;
-    background-size: 1920px 980px;
-    background-repeat: no-repeat;
-    animation-duration: 2.5s;
-    animation-name: zoom-out;
-    transition-timing-function: ease-out;
-    @keyframes zoom-out {
-        from {
-            opacity: 0;
-            background-size: 2016px 1029px;
-        }
-        to {
-            opacity: 1;
-            background-size: 1920px 980px;
-        }
-    }
-`;
-
-const MemoPad = styled.img`
-    margin-top: -36px;
-    width: 430px;
-    height: 756px;
-`;
-
-const Alert = styled.p`
-    position: absolute;
-    top: 80px;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 338px;
-    text-align: center;
-    color: #FF6868;
-`;
-
-const RightButtonsWrapper = styled.div`
-    flex-direction: column;
-    justify-content: space-between;
-    position: absolute;
-    top: 0;
-    right: -32px;
-    transform: translateX(100%);
-    height: 720px;
-    padding: 20px 0 125px;
-`;
-
-const LogoutButton = styled.button`
-    width: 66px;
-    height: 66px;
-    border-radius: 33px;
-    background-color: #7B81A1;
-    box-shadow: 0px 2px 8px rgba(110, 106, 150, 0.24);
-    transition: all 0.2s ease-in;
-    &:hover {
-        background-color: #5162B9;
-    }
-`;
+import * as S from './List.style';
 
 const List = () => {
     const [ todoList, setTodoList ] = useState<TodoType[]>([]);
@@ -103,22 +39,22 @@ const List = () => {
 
     return (
     <>
-        <BackgroundImage path={`${process.env.PUBLIC_URL}/img/background.jpg`}/>
+        <S.BackgroundImage path={`${process.env.PUBLIC_URL}/img/background.jpg`}/>
         <Container>
             <>
-                <MemoPad src={`${process.env.PUBLIC_URL}/img/memo-pad.svg`} alt="complete-Sign-Up-badge" />
+                <S.MemoPad src={`${process.env.PUBLIC_URL}/img/memo-pad.svg`} alt="complete-Sign-Up-badge" />
                 <TodoList todoList={todoList} setTodoList={setTodoList} />
-                <Alert>{alert}</Alert>
-                <RightButtonsWrapper className="flex">
+                <S.Alert>{alert}</S.Alert>
+                <S.RightButtonsWrapper className="flex">
                     <div className="top">
 
                     </div>
                     <div className="bottom">
-                        <LogoutButton onClick={onClickLogout}>
+                        <S.LogoutButton onClick={onClickLogout}>
                             <img src={`${process.env.PUBLIC_URL}/img/icon/ic-logout.svg`} alt="logout-icon" />
-                        </LogoutButton>
+                        </S.LogoutButton>
                     </div>
-                </RightButtonsWrapper>
+                </S.RightButtonsWrapper>
             </>
         </Container>
     </>

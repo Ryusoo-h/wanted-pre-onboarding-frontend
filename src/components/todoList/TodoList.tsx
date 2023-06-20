@@ -66,7 +66,7 @@ const TodoList = ({ todoList, setTodoList, isLatestSort }:TodoListProps) => {
     return (
         <S.TodoWrapper>
             <Title />
-            <S.TodoTopBox className="flex">
+            <S.TodoTopBox className="flex" isTodoModifing={isTodoModifing}>
                 <S.CheckWrapper />
                 <span className="text">할일</span>
                 <S.ButtonWrapper />

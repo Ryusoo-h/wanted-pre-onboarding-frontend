@@ -26,20 +26,30 @@ export const ButtonWrapper = styled.div`
     align-items: center;
 `;
 
-export const TodoTopBox = styled.div`
+export const TodoBoxCommonStyle = styled('div')<{isTodoModifing:boolean}>`
     position: relative;
     z-index: 3;
-    margin-top: 20px;
     width: 100%;
-    border-top: solid 3px var(--light-green);
-    border-bottom: solid 3px var(--light-green);
-    height: 54px;
     align-items: stretch;
     font-size: 20px;
-    background-color: #FFFBF8;
+    border-bottom: solid 3px var(--light-green);
+    ${props => (props.isTodoModifing) &&
+        css`
+            z-index: 1;
+            pointer-events: none;
+    `}
     .text {
         align-items: center;
         flex-grow: 1;
+    }
+`;
+
+export const TodoTopBox = styled(TodoBoxCommonStyle)<{isTodoModifing:boolean}>`
+    margin-top: 20px;
+    height: 54px;
+    background-color: #FFFBF8;
+    border-top: solid 3px var(--light-green);
+    .text {
         padding: 11px 8px;
         font-size: 24px;
         color: #4D837F;
@@ -60,31 +70,23 @@ export const TodoListUl = styled.ul`
         display: none;
     }
 `;
-export const TodoAddBox = styled('div')<{isAddTodoInputFocusing:boolean, isTodoModifing:boolean}>`
-    width: 100%;
+
+export const TodoAddBox = styled(TodoBoxCommonStyle)<{isAddTodoInputFocusing:boolean, isTodoModifing:boolean}>`
+    height: 52px;
     background-color: #fff;
     border-top: solid 1px var(--light-green);
-    border-bottom: solid 3px var(--light-green);
-    height: 52px;
-    align-items: stretch;
-    font-size: 20px;
     transform: translateY(-32px);
     transition: box-shadow 0.2s ease-in-out;
-    position: relative;
-    z-index: 3;
-    ${props => (props.isTodoModifing) &&
-        css`
-            filter: opacity(0.4);
-            pointer-events: none;
-    `}
     ${props => props.isAddTodoInputFocusing &&
         css`
             z-index: 4;
             box-shadow: 0px 2px 12px rgba(110, 106, 150, 0.5);
     `}
+    ${props => (props.isTodoModifing) &&
+        css`
+            filter: opacity(0.4);
+    `}
     .text {
-        align-items: center;
-        flex-grow: 1;
         input {
             width: 100%;
             padding: 10px 8px 6px;

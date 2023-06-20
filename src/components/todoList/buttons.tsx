@@ -6,6 +6,7 @@ type EachButtonProps = {
     disabled?: boolean,
 }
 
+// 수정 모드 - 수정 확정 버튼
 export const CheckButton = ({ dataTestid, onClickButton, ...rest }:EachButtonProps) => {
     
     return (
@@ -21,6 +22,7 @@ export const CheckButton = ({ dataTestid, onClickButton, ...rest }:EachButtonPro
     );
 }
 
+// 수정 모드 - 수정 취소 버튼
 export const CancelButton = ({ dataTestid, onClickButton, ...rest }:EachButtonProps) => {
 
     return (
@@ -36,6 +38,7 @@ export const CancelButton = ({ dataTestid, onClickButton, ...rest }:EachButtonPr
 }
 
 
+// 기본 투두 리스트 - 수정 버튼
 export const ModifyButton = ({ dataTestid, onClickButton, ...rest }:EachButtonProps) => {
     
     return (
@@ -50,7 +53,7 @@ export const ModifyButton = ({ dataTestid, onClickButton, ...rest }:EachButtonPr
     );
 }
 
-
+// 기본 투두 리스트 - 삭제 버튼
 export const DeleteButton = ({ dataTestid, onClickButton, ...rest }:EachButtonProps) => {
     
     return (
@@ -61,6 +64,36 @@ export const DeleteButton = ({ dataTestid, onClickButton, ...rest }:EachButtonPr
             dataTestid={dataTestid}
         >
             <img src={`${process.env.PUBLIC_URL}/img/icon/ic-delete.svg`} alt="delete-icon" />
+        </SmallSquareButton>
+    );
+}
+
+// 삭제 모드 - 삭제 취소 버튼
+export const DeleteCancelButton = ({ dataTestid, onClickButton, ...rest }:EachButtonProps) => {
+
+    return (
+        <SmallSquareButton
+            color="#C3C3C3"
+            hoverColor="#9B9B9B"
+            onClickButton={onClickButton}
+            dataTestid={dataTestid}
+        >
+            <img src={`${process.env.PUBLIC_URL}/img/icon/ic-cancel.svg`} alt="cancel-icon" />
+        </SmallSquareButton>
+    );
+}
+
+// 삭제 모드 - 삭제 확정 버튼
+export const DeleteConfirmButton = ({ dataTestid, onClickButton, ...rest }:EachButtonProps) => {
+    
+    return (
+        <SmallSquareButton
+            color="#FC7171"
+            hoverColor="#FF4141"
+            onClickButton={onClickButton}
+            dataTestid={dataTestid}
+        >
+            <img src={`${process.env.PUBLIC_URL}/img/icon/ic-check.svg`} alt="delete-icon" />
         </SmallSquareButton>
     );
 }

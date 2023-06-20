@@ -34,6 +34,8 @@ const ButtonWrapper = styled.div`
 `;
 
 const TodoTopBox = styled.div`
+    position: relative;
+    z-index: 3;
     margin-top: 20px;
     width: 100%;
     border-top: solid 3px var(--light-green);
@@ -53,8 +55,13 @@ const TodoTopBox = styled.div`
 
 const TodoListUl = styled.ul`
     max-height: 375px;
+    width: 370px;
+    padding: 16px;
+    transform: translate(-16px, -16px);
+    position: relative;
+    z-index:2;
     overflow: auto;
-    -ms-overflow-style: none; 
+    -ms-overflow-style: none;
     scrollbar-width: none;
     &::-webkit-scrollbar {
         display: none;
@@ -68,7 +75,10 @@ const TodoAddBox = styled('div')<{isAddTodoInputFocusing:boolean, isTodoModifing
     height: 52px;
     align-items: stretch;
     font-size: 20px;
+    transform: translateY(-32px);
     transition: box-shadow 0.2s ease-in-out;
+    position: relative;
+    z-index: 3;
     ${props => (props.isTodoModifing) &&
         css`
             opacity: 0.4;
@@ -76,6 +86,7 @@ const TodoAddBox = styled('div')<{isAddTodoInputFocusing:boolean, isTodoModifing
     `}
     ${props => props.isAddTodoInputFocusing &&
         css`
+            z-index: 4;
             box-shadow: 0px 2px 12px rgba(110, 106, 150, 0.5);
     `}
     .text {
@@ -189,29 +200,29 @@ const TodoList = ({ todoList, setTodoList }:TodoListProps) => {
                     )
                 })}
             </TodoListUl>
-                <TodoAddBox className="flex" isAddTodoInputFocusing={isAddTodoInputFocusing} isTodoModifing={isTodoModifing}>
-                    <CheckWrapper />
-                    <span className="text flex">
-                        <label htmlFor="add-todo" style={{display: "none"}}>TODO 추가하기</label>
-                        <AddTodoInput 
-                            data-testid="new-todo-input"
-                            type="text"
-                            id="add-todo"
-                            placeholder="새 할일 입력하기"
-                            value={newTodo}
-                            onChange={(e) => {onChangeAddTodoInput(e)}}
-                            onFocus={() => {setIsAddTodoInputFocusing(true)}}
-                            onBlur={() => {setIsAddTodoInputFocusing(false)}}
-                            onKeyPress={(e) => {onKeyPressEvent(e, "Enter", () => {
-                                onClickAddTodoButton();
-                                setNewTodo("");
-                            })}}
-                        />
-                    </span>
-                    <ButtonWrapper>
-                        <AddButton data-testid="new-todo-add-button" className="font-net" onClick={onClickAddTodoButton} disabled={newTodo===""}>추가</AddButton>
-                    </ButtonWrapper>
-                </TodoAddBox>
+            <TodoAddBox className="flex" isAddTodoInputFocusing={isAddTodoInputFocusing} isTodoModifing={isTodoModifing}>
+                <CheckWrapper />
+                <span className="text flex">
+                    <label htmlFor="add-todo" style={{display: "none"}}>TODO 추가하기</label>
+                    <AddTodoInput 
+                        data-testid="new-todo-input"
+                        type="text"
+                        id="add-todo"
+                        placeholder="새 할일 입력하기"
+                        value={newTodo}
+                        onChange={(e) => {onChangeAddTodoInput(e)}}
+                        onFocus={() => {setIsAddTodoInputFocusing(true)}}
+                        onBlur={() => {setIsAddTodoInputFocusing(false)}}
+                        onKeyPress={(e) => {onKeyPressEvent(e, "Enter", () => {
+                            onClickAddTodoButton();
+                            setNewTodo("");
+                        })}}
+                    />
+                </span>
+                <ButtonWrapper>
+                    <AddButton data-testid="new-todo-add-button" className="font-net" onClick={onClickAddTodoButton} disabled={newTodo===""}>추가</AddButton>
+                </ButtonWrapper>
+            </TodoAddBox>
         </TodoWrapper>
     );
 };

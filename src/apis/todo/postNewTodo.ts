@@ -20,7 +20,7 @@ const postNewTodo = async (token:string, todo:string) => {
     }
     ).catch ( e => {
         const errorData:ErrorDataType = e.response.data;
-        console.log('postNewTodo 오류: ', errorData);
+        console.log("✅postNewTodo 오류: ", errorData);
         return [];
     });
 

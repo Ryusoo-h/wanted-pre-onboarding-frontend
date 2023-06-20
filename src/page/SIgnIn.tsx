@@ -39,8 +39,9 @@ type SingInProps = {
 }
 
 const SignIn = ({ isCompleteSingUp, setIsCompleteSingUp }:SingInProps) => {
+    const [message, setMessage] = useState<string>('');
+
     const navigate = useNavigate();
-    const [message, setMessage] = useState('');
 
     const onFormSubmit = (email:string, password:string) => {
         postSignIn(email, password)
@@ -65,7 +66,7 @@ const SignIn = ({ isCompleteSingUp, setIsCompleteSingUp }:SingInProps) => {
                 }
             }
         }).catch( e => {
-            console.log('✅로그인 에러:', e.message);
+            console.log("✅로그인 에러: ", e.message);
         });
     };
 

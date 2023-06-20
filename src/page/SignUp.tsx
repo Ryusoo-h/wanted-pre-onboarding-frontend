@@ -44,8 +44,9 @@ type SignUpProps = {
     setIsCompleteSingUp: (isComplete:boolean) => void,
 }
 const SignUp = ({ setIsCompleteSingUp }:SignUpProps) => {
+    const [message, setMessage] = useState<string>('');
+    
     const navigate = useNavigate();
-    const [message, setMessage] = useState('');
 
     const onFormSubmit = (email:string, password:string) => {
         postSignUp(email, password)
@@ -59,10 +60,10 @@ const SignUp = ({ setIsCompleteSingUp }:SignUpProps) => {
                     setMessage(response.message);
                     break;
                 default:
-                    console.log('✅postSignUp API 에러: ', response);
+                    console.log("✅postSignUp API 에러: ", response);
             }
         }).catch(e => {
-            console.log('✅회원가입 에러:', e.message);
+            console.log("✅회원가입 에러: ", e.message);
         })
     };
 

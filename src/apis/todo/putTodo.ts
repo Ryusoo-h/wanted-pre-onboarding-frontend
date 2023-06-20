@@ -17,12 +17,11 @@ const putTodo = async (token:string, id:number, todo:string, isCompleted:boolean
         }
     ).then ( res => {
         const data:TodoType = res.data;
-        console.log('1', data);
         return data;
     }
     ).catch ( e => {
         const errorData:ErrorDataType = e.response.data;
-        console.log('putTodo 오류: ', errorData);
+        console.log("✅putTodo 오류: ", errorData);
         return [];
     });
 

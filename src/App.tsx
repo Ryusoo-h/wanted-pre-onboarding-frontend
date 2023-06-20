@@ -10,7 +10,7 @@ import Home from './page/Home';
 
 
 function App() {
-  const [isCompleteSingUp, setIsCompleteSingUp] = useState(false);
+  const [isCompleteSingUp, setIsCompleteSingUp] = useState<boolean>(false);
 
   return (
     <Routes>

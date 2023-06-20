@@ -14,7 +14,7 @@ const deleteTodo = async (token:string, id:number) => {
     ).then ( res => []
     ).catch ( e => {
         const errorData:ErrorDataType = e.response.data;
-        console.log("deleteTodo 에러: ", errorData);
+        console.log("✅deleteTodo 에러: ", errorData);
         return errorData;
     });
 

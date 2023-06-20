@@ -111,16 +111,13 @@ type TodoProps = {
     setTodoList: (todoList:TodoType[]) => void,
 }
 const Todo = ({ todo, isAddTodoInputFocusing, isTodoModifing, setIsTodoModifing, todoList, setTodoList }:TodoProps) => {
-    const [isModify, setIsModify] = useState(false); // 수정 모드 결정
-    const [isDelete, setIsDelete] = useState(false); // 삭제 모드 결정
-    const [modifiedTodo, setModifiedTodo] = useState('');
-    const [modifiedTodoCheck, setModifiedTodoCheck] = useState(false);
-    const isPreventUpdateCheckButtonWhenFirstRender = useRef(true); // 처음 렌더링 시, checkBox 수정 업데이트 되는것을 방지하기위한 플래그
-    const thisTodo = useRef(null);
-
-    const onClickCheckBox = (id:number) => {
-        setModifiedTodoCheck(!modifiedTodoCheck);
-    }
+    
+    const [isModify, setIsModify] = useState<boolean>(false); // 수정 모드 결정
+    const [isDelete, setIsDelete] = useState<boolean>(false); // 삭제 모드 결정
+    const [modifiedTodo, setModifiedTodo] = useState<string>('');
+    const [modifiedTodoCheck, setModifiedTodoCheck] = useState<boolean>(false);
+    const isPreventUpdateCheckButtonWhenFirstRender = useRef<boolean>(true); // 처음 렌더링 시, checkBox 수정 업데이트 되는것을 방지하기위한 플래그
+    const thisTodo = useRef<HTMLLIElement>(null);
 
     const onClickCancelButton = () => { // 수정 취소
         setModifiedTodoCheck(todo.isCompleted);
@@ -139,7 +136,7 @@ const Todo = ({ todo, isAddTodoInputFocusing, isTodoModifing, setIsTodoModifing,
                     setTodoList(newTodoList);
                 }
             }).catch ( e => {
-                console.log('todo 수정 에러: ', e)
+                console.log("✅todo 수정 에러: ", e)
             });
         }
         setIsModify(false);
@@ -183,7 +180,7 @@ const Todo = ({ todo, isAddTodoInputFocusing, isTodoModifing, setIsTodoModifing,
                     setTodoList(newTodoList);
                 }
             }).catch ( e => {
-                console.log('todo 삭제 에러: ', e);
+                console.log("✅todo 삭제 에러: ", e);
             })
         }
         setIsModify(false);
@@ -240,7 +237,7 @@ const Todo = ({ todo, isAddTodoInputFocusing, isTodoModifing, setIsTodoModifing,
                         type="checkbox"
                         checked={modifiedTodoCheck}
                         readOnly
-                        onClick={() => {onClickCheckBox(todo.id)}}
+                        onClick={() => {setModifiedTodoCheck(!modifiedTodoCheck)}}
                         path={`${process.env.PUBLIC_URL}/img/icon/ic-check-green.svg`}
                     />
                 )}

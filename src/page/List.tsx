@@ -92,11 +92,11 @@ const List = () => {
                 if (Array.isArray(response)){
                     setTodoList(response);
                 } else {
-                    setAlert("오류 : 데이터를 가져올 수 없습니다");
-                    console.log("getTodoList 에러", response);
+                    setAlert("✅오류 : 데이터를 가져올 수 없습니다");
+                    console.log("✅getTodoList 에러", response);
                 }
             }).catch ( e => {
-                console.log("todo list 가져오기 에러", e);
+                console.log("✅todo list 가져오기 에러", e);
             })
         }
     }, []);

@@ -70,12 +70,10 @@ const AuthForm = ({ dataTestid, children, onFormSubmit, message, ...rest }:AuthF
     const [isEmailValid, setIsEmailValid] = useState<boolean>(false);
     const [isPasswordValid, setIsPasswordValid] = useState<boolean>(false);
     const [isAllValid, setIsAllValid] = useState<boolean>(false);
-    // TODO : 이메일과 비밀번호 모두 검증 완료되면 true
 
     useEffect(() => {
         setIsAllValid(isEmailValid && isPasswordValid);
     }, [isEmailValid, isPasswordValid])
-    // TODO : 검증 되지않은 이유를 유저에게 알려주기
 
     const onChangeEmailInput = (e:React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;

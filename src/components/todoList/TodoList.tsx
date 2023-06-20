@@ -138,8 +138,8 @@ type TodoListProps = {
 }
 
 const TodoList = ({ todoList, setTodoList }:TodoListProps) => {
-    const [ isAddTodoInputFocusing, setIsAddTodoInputFocusing ] = useState(false);
-    const [ isTodoModifing, setIsTodoModifing ] = useState(false);
+    const [ isAddTodoInputFocusing, setIsAddTodoInputFocusing ] = useState<boolean>(false);
+    const [ isTodoModifing, setIsTodoModifing ] = useState<boolean>(false);
     const [ newTodo, setNewTodo ] = useState<string>("");
     const navigate = useNavigate();
 
@@ -160,17 +160,11 @@ const TodoList = ({ todoList, setTodoList }:TodoListProps) => {
                     setNewTodo("");
                 }
             }).catch ( e => {
-                console.log('새 Todo 등록 에러: ', e);
+                console.log("✅새 Todo 등록 에러: ", e);
             })
         }
     }
 
-    const onKeyPressEnter = (e: KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === 'Enter') {
-            onClickAddTodoButton();
-            setNewTodo("");
-        }
-    }
     useEffect(() => {
         if (!getAccessToken()) {
             navigate("/signin");

@@ -5,34 +5,7 @@ import { Navigate, useNavigate } from 'react-router-dom';
 import postSignUp from "../apis/auth/postSignUp";
 import { useState } from "react";
 import getAccessToken from "../util/getAccessToken";
-
-const Card = styled.div`
-    position: relative;
-    width: 620px;
-    height: 430px;
-    background-color: #fff;
-    box-shadow: 0px 2px 8px rgba(110, 106, 150, 0.4);
-    transform: translate(10%, -7%) rotate(-2deg);
-    animation-duration: 0.7s;
-    animation-name: smaller;
-    transition-timing-function: ease-in-out;
-    @keyframes smaller {
-        from {
-            transform: translate(20%, -10%) rotate(-4deg) scale(1.05);
-        }
-        to {
-            transform: translate(10%, -7%) rotate(-2deg);
-        }
-    }
-`;
-
-const CardWrapper = styled.div`
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 336px;
-    transform: translate(-50%, -50%) rotate(2deg);
-`;
+import Card from "../components/common/Card";
 
 const Welcome = styled.h2`
     text-align: center;
@@ -72,11 +45,11 @@ const SignUp = ({ setIsCompleteSingUp }:SignUpProps) => {
     }
     return (
         <Envelop>
-            <Card>
-                <CardWrapper>
+            <Card degree={-2} translateX={10} translateY={-7}>
+                <>
                     <Welcome className="font-net">Welcome!</Welcome>
                     <AuthForm dataTestid="signup-button" color="#EBFBE8" onFormSubmit={onFormSubmit} message={message}>회원가입</AuthForm>
-                </CardWrapper>
+                </>
             </Card>
         </Envelop>
     );

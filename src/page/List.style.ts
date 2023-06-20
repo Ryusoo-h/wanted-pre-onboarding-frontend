@@ -1,5 +1,5 @@
 
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export const BackgroundImage = styled('div')<{path:string}>`
     position: absolute;
@@ -54,13 +54,27 @@ export const RightButtonsWrapper = styled.div`
     padding: 20px 0 125px;
 `;
 
-export const LogoutButton = styled.button`
+export const RightButton = styled.button`
     width: 66px;
     height: 66px;
     border-radius: 33px;
-    background-color: #7B81A1;
     box-shadow: 0px 2px 8px rgba(110, 106, 150, 0.24);
     transition: all 0.2s ease-in;
+    background: rgba(255, 255, 255, 0.5);
+    &:hover {
+        box-shadow: 0px 2px 12px rgba(110, 106, 150, 0.50);
+    }
+`;
+
+export const SortButton = styled(RightButton)<{isLatestSort:boolean}>`
+    ${props => props.isLatestSort &&
+        css`
+        background-color: #fff;
+    `}
+`
+
+export const LogoutButton = styled(RightButton)`
+    background-color: #7B81A1;
     &:hover {
         background-color: #5162B9;
     }

@@ -11,7 +11,14 @@ import * as S from './List.style';
 const List = () => {
     const [ todoList, setTodoList ] = useState<TodoType[]>([]);
     const [ alert, setAlert ] = useState<string>("");
+    const [ isLatestSort, setIsLatestSort ] = useState<boolean>(false);
     const navigate = useNavigate();
+
+    const onClickSort = () => {
+        setIsLatestSort(!isLatestSort);
+        const newTodoList = todoList.reverse();
+        setTodoList(newTodoList);
+    }
 
     const onClickLogout = () => {
         localStorage.removeItem("access_token");
@@ -43,11 +50,13 @@ const List = () => {
         <Container>
             <>
                 <S.MemoPad src={`${process.env.PUBLIC_URL}/img/memo-pad.svg`} alt="complete-Sign-Up-badge" />
-                <TodoList todoList={todoList} setTodoList={setTodoList} />
+                <TodoList todoList={todoList} setTodoList={setTodoList} isLatestSort={isLatestSort} />
                 <S.Alert>{alert}</S.Alert>
                 <S.RightButtonsWrapper className="flex">
                     <div className="top">
-
+                        <S.SortButton onClick={onClickSort} isLatestSort={isLatestSort}>
+                            <img src={`${process.env.PUBLIC_URL}/img/icon/ic-blue-arrow.svg`} alt="arrow-icon" />
+                        </S.SortButton>
                     </div>
                     <div className="bottom">
                         <S.LogoutButton onClick={onClickLogout}>

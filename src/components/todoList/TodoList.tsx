@@ -10,10 +10,11 @@ import * as S from './TodoList.style';
 
 type TodoListProps = {
     todoList: TodoType[],
-    setTodoList: (todoList: TodoType[]) => void;
+    setTodoList: (todoList: TodoType[]) => void,
+    isLatestSort: boolean,
 }
 
-const TodoList = ({ todoList, setTodoList }:TodoListProps) => {
+const TodoList = ({ todoList, setTodoList, isLatestSort }:TodoListProps) => {
     const [ isAddTodoInputFocusing, setIsAddTodoInputFocusing ] = useState<boolean>(false);
     const [ isTodoModifing, setIsTodoModifing ] = useState<boolean>(false);
     const [ newTodo, setNewTodo ] = useState<string>("");
@@ -34,7 +35,11 @@ const TodoList = ({ todoList, setTodoList }:TodoListProps) => {
             postNewTodo(token, newTodo)
             .then ( response => {
                 if (!Array.isArray(response)) {
-                    setTodoList(todoList.concat(response));
+                    if (isLatestSort) {
+                        setTodoList([response, ...todoList]);
+                    } else {
+                        setTodoList(todoList.concat(response));
+                    }
                     setNewTodo("");
                 }
             }).catch ( e => {
@@ -53,10 +58,10 @@ const TodoList = ({ todoList, setTodoList }:TodoListProps) => {
         // todoList에 새 todo가 추가되면 스크롤을 가장아래로 이동시킴
         if (todoListEl.current && prevTodoListElHeight.current < (todoListEl.current?.scrollHeight || 0)) {
             const { scrollHeight, clientHeight } = todoListEl.current;
-            todoListEl.current.scrollTop = scrollHeight - clientHeight;
+            todoListEl.current.scrollTop = isLatestSort ? 0 : scrollHeight - clientHeight;
         }
         prevTodoListElHeight.current = todoListEl.current?.scrollHeight || 0;
-    }, [todoList])
+    }, [todoList]);
     
     return (
         <S.TodoWrapper>

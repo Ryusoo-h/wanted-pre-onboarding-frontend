@@ -21,13 +21,13 @@ const TodoLi = styled('li')<{checked:boolean, isAddTodoInputFocusing:boolean, is
     `}
     ${props => (props.isAddTodoInputFocusing || props.isTodoModifing) &&
         css`
-            opacity: 0.4;
+            filter: opacity(0.4);
             pointer-events: none;
     `}
     ${props => props.isModify &&
         css`
             background-color: #fff;
-            opacity: 1;
+            filter: opacity(1);
             pointer-events: auto;
             box-shadow: 0px 2px 12px rgba(110, 106, 150, 0.5);
             position: relative;

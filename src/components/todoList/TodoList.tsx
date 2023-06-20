@@ -81,7 +81,7 @@ const TodoAddBox = styled('div')<{isAddTodoInputFocusing:boolean, isTodoModifing
     z-index: 3;
     ${props => (props.isTodoModifing) &&
         css`
-            opacity: 0.4;
+            filter: opacity(0.4);
             pointer-events: none;
     `}
     ${props => props.isAddTodoInputFocusing &&

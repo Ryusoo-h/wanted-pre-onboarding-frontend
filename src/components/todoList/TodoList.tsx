@@ -2,7 +2,7 @@ import Todo from "./Todo";
 import { TodoType } from '../../types/todoList';
 import styled, { css } from "styled-components";
 import Title from "../common/Title";
-import { KeyboardEvent, useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import postNewTodo from "../../apis/todo/postNewTodo";
 import getAccessToken from "../../util/getAccessToken";
@@ -141,6 +141,8 @@ const TodoList = ({ todoList, setTodoList }:TodoListProps) => {
     const [ isAddTodoInputFocusing, setIsAddTodoInputFocusing ] = useState<boolean>(false);
     const [ isTodoModifing, setIsTodoModifing ] = useState<boolean>(false);
     const [ newTodo, setNewTodo ] = useState<string>("");
+    const todoListEl = useRef<HTMLUListElement>(null);
+    const prevTodoListElHeight = useRef<number>(0);
     const navigate = useNavigate();
 
     const onChangeAddTodoInput = (e:React.ChangeEvent<HTMLInputElement>) => {
@@ -171,6 +173,15 @@ const TodoList = ({ todoList, setTodoList }:TodoListProps) => {
         } 
     }, [isAddTodoInputFocusing, isTodoModifing]);
 
+    useEffect(() => {
+        // todoList에 새 todo가 추가되면 스크롤을 가장아래로 이동시킴
+        if (todoListEl.current && prevTodoListElHeight.current < (todoListEl.current?.scrollHeight || 0)) {
+            const { scrollHeight, clientHeight } = todoListEl.current;
+            todoListEl.current.scrollTop = scrollHeight - clientHeight;
+        }
+        prevTodoListElHeight.current = todoListEl.current?.scrollHeight || 0;
+    }, [todoList])
+    
     return (
         <TodoWrapper>
             <Title />
@@ -179,7 +190,7 @@ const TodoList = ({ todoList, setTodoList }:TodoListProps) => {
                 <span className="text">할일</span>
                 <ButtonWrapper />
             </TodoTopBox>
-            <TodoListUl>
+            <TodoListUl ref={todoListEl}>
                 {todoList.map((todo) => {
                     return (
                         <Todo 

@@ -1,11 +1,11 @@
 
 import AuthForm from '../components/common/AuthForm';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import Envelop from '../components/common/Envelop';
 import { useState } from 'react';
 import postSignIn from '../apis/auth/postSignIn';
-import getAccessToken from '../util/getAccessToken';
 import * as S from './SignIn.style';
+import { useToken } from '../hooks/useToken';
 
 type SingInProps = {
     isCompleteSingUp: boolean,
@@ -14,16 +14,14 @@ type SingInProps = {
 
 const SignIn = ({ isCompleteSingUp, setIsCompleteSingUp }:SingInProps) => {
     const [message, setMessage] = useState<string>('');
-
-    const navigate = useNavigate();
+    const { isToken, login } = useToken();
 
     const onFormSubmit = (email:string, password:string) => {
         postSignIn(email, password)
         .then( response => {
             if (response.statusCode === 200 && response.access_token) {
-                localStorage.setItem("access_token", response.access_token);
-                navigate('/');
                 setIsCompleteSingUp(false);
+                login(response.access_token);
             } else {
                 switch (response.statusCode) {
                     case 401:
@@ -44,7 +42,7 @@ const SignIn = ({ isCompleteSingUp, setIsCompleteSingUp }:SingInProps) => {
         });
     };
 
-    if (getAccessToken()) {
+    if (isToken()) {
         return <Navigate to="/todo" replace={true} />;
     }
     return (

@@ -3,16 +3,15 @@ import Container from '../components/common/Container';
 import { useEffect, useState } from 'react';
 import TodoList from '../components/todoList/TodoList';
 import { TodoType } from '../types/todoList';
-import { useNavigate } from 'react-router-dom';
 import getTodoList from '../apis/todo/getTodoList';
-import getAccessToken from '../util/getAccessToken';
 import * as S from './List.style';
+import { useToken } from '../hooks/useToken';
 
 const List = () => {
     const [ todoList, setTodoList ] = useState<TodoType[]>([]);
     const [ alert, setAlert ] = useState<string>("");
     const [ isLatestSort, setIsLatestSort ] = useState<boolean>(false);
-    const navigate = useNavigate();
+    const { getToken, logout, checkTokenAndInvoke } = useToken();
 
     const onClickSort = () => {
         setIsLatestSort(!isLatestSort);
@@ -20,16 +19,10 @@ const List = () => {
         setTodoList(newTodoList);
     }
 
-    const onClickLogout = () => {
-        localStorage.removeItem("access_token");
-        navigate("/signin");
-    }
-
     useEffect(() => {
-        const token = getAccessToken();
-        if (!token) {
-            return navigate("/signin");
-        } else {
+        const token = getToken();
+        checkTokenAndInvoke(() => {
+            token &&
             getTodoList(token)
             .then ( response => {
                 if (Array.isArray(response)){
@@ -41,7 +34,7 @@ const List = () => {
             }).catch ( e => {
                 console.log("✅todo list 가져오기 에러", e);
             })
-        }
+        });
     }, []);
 
     return (
@@ -59,7 +52,7 @@ const List = () => {
                         </S.SortButton>
                     </div>
                     <div className="bottom">
-                        <S.LogoutButton onClick={onClickLogout}>
+                        <S.LogoutButton onClick={() => {logout()}}>
                             <img src={`${process.env.PUBLIC_URL}/img/icon/ic-logout.svg`} alt="logout-icon" />
                         </S.LogoutButton>
                     </div>

@@ -4,15 +4,16 @@ import AuthForm from "../components/common/AuthForm";
 import { Navigate, useNavigate } from 'react-router-dom';
 import postSignUp from "../apis/auth/postSignUp";
 import { useState } from "react";
-import getAccessToken from "../util/getAccessToken";
 import Card from "../components/common/Card";
 import * as S from "./SignUp.style";
+import { useToken } from "../hooks/useToken";
 
 type SignUpProps = {
     setIsCompleteSingUp: (isComplete:boolean) => void,
 }
 const SignUp = ({ setIsCompleteSingUp }:SignUpProps) => {
     const [message, setMessage] = useState<string>('');
+    const { getToken } = useToken();
     
     const navigate = useNavigate();
 
@@ -35,7 +36,7 @@ const SignUp = ({ setIsCompleteSingUp }:SignUpProps) => {
         })
     };
 
-    if (getAccessToken()) {
+    if (getToken()) {
         return <Navigate to="/todo" replace={true} />;
     }
     return (

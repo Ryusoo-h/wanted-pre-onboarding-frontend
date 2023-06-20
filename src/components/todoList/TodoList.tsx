@@ -2,11 +2,11 @@ import Todo from "./Todo";
 import { TodoType } from '../../types/todoList';
 import Title from "../common/Title";
 import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import postNewTodo from "../../apis/todo/postNewTodo";
-import getAccessToken from "../../util/getAccessToken";
+import { useToken } from "../../hooks/useToken";
 import onKeyPressEvent from "../../util/onKeyPressEvent";
 import * as S from './TodoList.style';
+import { useNavigate } from "react-router-dom";
 
 type TodoListProps = {
     todoList: TodoType[],
@@ -20,6 +20,8 @@ const TodoList = ({ todoList, setTodoList, isLatestSort }:TodoListProps) => {
     const [ newTodo, setNewTodo ] = useState<string>("");
     const todoListEl = useRef<HTMLUListElement>(null);
     const prevTodoListElHeight = useRef<number>(0);
+    const { getToken, isToken, checkTokenAndInvoke } = useToken();
+    
     const navigate = useNavigate();
 
     const onChangeAddTodoInput = (e:React.ChangeEvent<HTMLInputElement>) => {
@@ -28,30 +30,28 @@ const TodoList = ({ todoList, setTodoList, isLatestSort }:TodoListProps) => {
     }
 
     const onClickAddTodoButton = () => {
-        const token = getAccessToken();
-        if (!token) {
-            navigate("/signin");
-        } else {
-            postNewTodo(token, newTodo)
-            .then ( response => {
-                if (!Array.isArray(response)) {
-                    if (isLatestSort) {
-                        setTodoList([response, ...todoList]);
-                    } else {
-                        setTodoList(todoList.concat(response));
+        checkTokenAndInvoke(() => {
+            const token = getToken();
+            if (token) {
+                postNewTodo(token, newTodo)
+                .then ( response => {
+                    if (!Array.isArray(response)) {
+                        if (isLatestSort) {
+                            setTodoList([response, ...todoList]);
+                        } else {
+                            setTodoList(todoList.concat(response));
+                        }
+                        setNewTodo("");
                     }
-                    setNewTodo("");
-                }
-            }).catch ( e => {
-                console.log("✅새 Todo 등록 에러: ", e);
-            })
-        }
+                }).catch ( e => {
+                    console.log("✅새 Todo 등록 에러: ", e);
+                })
+            }
+        });
     }
 
     useEffect(() => {
-        if (!getAccessToken()) {
-            navigate("/signin");
-        } 
+        isToken() || navigate("/signin");
     }, [isAddTodoInputFocusing, isTodoModifing]);
 
     useEffect(() => {

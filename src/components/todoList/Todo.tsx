@@ -3,10 +3,10 @@ import { useEffect, useRef, useState } from 'react';
 import { TodoType } from '../../types/todoList';
 import { CancelButton, CheckButton, DeleteButton, DeleteCancelButton, DeleteConfirmButton, ModifyButton } from './buttons';
 import deleteTodo from '../../apis/todo/deleteTodo';
-import getAccessToken from '../../util/getAccessToken';
 import putTodo from '../../apis/todo/putTodo';
 import onKeyPressEvent from '../../util/onKeyPressEvent';
 import * as S from './Todo.style';
+import { useToken } from '../../hooks/useToken';
 
 type TodoProps = {
     todo: TodoType,
@@ -17,13 +17,13 @@ type TodoProps = {
     setTodoList: (todoList:TodoType[]) => void,
 }
 const Todo = ({ todo, isAddTodoInputFocusing, isTodoModifing, setIsTodoModifing, todoList, setTodoList }:TodoProps) => {
-    
     const [isModify, setIsModify] = useState<boolean>(false); // 수정 모드 결정
     const [isDelete, setIsDelete] = useState<boolean>(false); // 삭제 모드 결정
     const [modifiedTodo, setModifiedTodo] = useState<string>('');
     const [modifiedTodoCheck, setModifiedTodoCheck] = useState<boolean>(false);
     const isPreventUpdateCheckButtonWhenFirstRender = useRef<boolean>(true); // 처음 렌더링 시, checkBox 수정 업데이트 되는것을 방지하기위한 플래그
     const thisTodo = useRef<HTMLLIElement>(null);
+    const { getToken } = useToken();
 
     const onClickCancelButton = () => { // 수정 취소
         setModifiedTodoCheck(todo.isCompleted);
@@ -32,7 +32,7 @@ const Todo = ({ todo, isAddTodoInputFocusing, isTodoModifing, setIsTodoModifing,
         setIsTodoModifing(false);
     }
     const onClickCheckButton = () => { // 수정 완료
-        const token = getAccessToken();
+        const token = getToken();
         const id = todo.id;
         if (token) {
             putTodo(token, id, modifiedTodo, modifiedTodoCheck)
@@ -76,7 +76,7 @@ const Todo = ({ todo, isAddTodoInputFocusing, isTodoModifing, setIsTodoModifing,
         setIsDelete(false);
     }
     const onClickDeleteConfirmButton = () => { // 삭제 확정
-        const token = getAccessToken();
+        const token = getToken();
         const id = todo.id;
         if (token) {
             deleteTodo(token, id)

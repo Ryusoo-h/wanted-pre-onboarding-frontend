@@ -1,9 +1,10 @@
 import { Navigate } from "react-router-dom";
-import getAccessToken from "../util/getAccessToken";
+import { useToken } from "../hooks/useToken";
 
 const Home = () => {
+    const { isToken } = useToken();
 
-    if (!getAccessToken()) {
+    if (!isToken()) {
         return <Navigate to="/signin" replace={true} />;
     }
     return <Navigate to="/todo" replace={true} />;

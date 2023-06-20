@@ -1,6 +1,6 @@
 
-import Container from "./Container";
-import Title from "./Title";
+import Container from "../common/Container";
+import Title from "../common/Title";
 import * as S from './Envelop.style';
 
 type EnvelopProps = {

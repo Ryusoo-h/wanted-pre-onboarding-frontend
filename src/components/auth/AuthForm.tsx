@@ -1,5 +1,4 @@
 
-import Button from "./Button";
 import { useState, useEffect } from 'react';
 import * as S from './AthForm.style';
 
@@ -54,15 +53,17 @@ const AuthForm = ({ dataTestid, children, onFormSubmit, message, ...rest }:AuthF
                         {isPasswordValid ? '✅' : '⬜'} 비밀번호는 8자 이상 입력해주세요
                     </S.Alert>
                 </S.AlertWrapper>
-                <Button
-                    dataTestid={dataTestid}
+                <S.SubmitButton
+                    data-testid={dataTestid}
+                    className="font-net"
                     disabled={!isAllValid}
-                    onFormSubmit={onFormSubmit}
-                    email={email}
-                    password={password}
+                    onClick={(e) => {
+                        e.preventDefault();
+                        onFormSubmit(email, password);
+                    }}
                 >
                     <>{children}</>
-                </Button>
+                </S.SubmitButton>
         </S.Form>
     );
 };

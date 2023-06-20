@@ -276,8 +276,8 @@ const Todo = ({ todo, isAddTodoInputFocusing, isTodoModifing, setIsTodoModifing,
                 {isModify ? (
                     isDelete ? (
                         <> {/* 삭제모드 버튼들 */}
-                            <DeleteCancelButton dataTestid="cancel-button" onClickButton={onClickDeleteCancelButton} />
-                            <DeleteConfirmButton dataTestid="submit-button" onClickButton={onClickDeleteConfirmButton} disabled={modifiedTodo===''} />
+                            <DeleteCancelButton dataTestid="delete-cancel-button" onClickButton={onClickDeleteCancelButton} />
+                            <DeleteConfirmButton dataTestid="delete-button" onClickButton={onClickDeleteConfirmButton} disabled={modifiedTodo===''} />
                         </>
                     ) : (
                         <> {/* 수정모드 버튼들 */}
@@ -288,7 +288,7 @@ const Todo = ({ todo, isAddTodoInputFocusing, isTodoModifing, setIsTodoModifing,
                 ) : (
                     <> {/* 기본 버튼들 */}
                         <ModifyButton dataTestid="modify-button" onClickButton={onClickModifyButton} />
-                        <DeleteButton dataTestid="delete-button" onClickButton={onClickDeleteButton} />
+                        <DeleteButton dataTestid="delete-mode-button" onClickButton={onClickDeleteButton} />
                     </>
                 )}
             </ButtonWrapper>

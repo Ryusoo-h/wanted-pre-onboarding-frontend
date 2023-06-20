@@ -1,7 +1,7 @@
 
-import AuthForm from '../components/common/AuthForm';
+import AuthForm from '../components/auth/AuthForm';
 import { Navigate } from 'react-router-dom';
-import Envelop from '../components/common/Envelop';
+import Envelop from '../components/auth/Envelop';
 import { useState } from 'react';
 import postSignIn from '../apis/auth/postSignIn';
 import * as S from './SignIn.style';
@@ -16,7 +16,7 @@ const SignIn = ({ isCompleteSingUp, setIsCompleteSingUp }:SingInProps) => {
     const [message, setMessage] = useState<string>('');
     const { isToken, login } = useToken();
 
-    const onFormSubmit = (email:string, password:string) => {
+    const submitSignIn = (email:string, password:string) => {
         postSignIn(email, password)
         .then( response => {
             if (response.statusCode === 200 && response.access_token) {
@@ -51,7 +51,7 @@ const SignIn = ({ isCompleteSingUp, setIsCompleteSingUp }:SingInProps) => {
             {isCompleteSingUp &&
                 <S.Badge src={`${process.env.PUBLIC_URL}/img/completeSignUp.svg`} alt="complete-Sign-Up-badge" />
             }
-            <AuthForm dataTestid="signin-button" onFormSubmit={onFormSubmit} message={message}>로그인</AuthForm>
+            <AuthForm dataTestid="signin-button" onFormSubmit={submitSignIn} message={message}>로그인</AuthForm>
             <S.LinkToSignUp to="/signup" className="font-net">회원가입</S.LinkToSignUp>
             </>
         </Envelop>

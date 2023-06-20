@@ -13,7 +13,7 @@ const List = () => {
     const [ isLatestSort, setIsLatestSort ] = useState<boolean>(false);
     const { getToken, logout, checkTokenAndInvoke } = useToken();
 
-    const onClickSort = () => {
+    const sortTodoList = () => {
         setIsLatestSort(!isLatestSort);
         const newTodoList = todoList.reverse();
         setTodoList(newTodoList);
@@ -47,7 +47,7 @@ const List = () => {
                 <S.Alert>{alert}</S.Alert>
                 <S.RightButtonsWrapper className="flex">
                     <div className="top">
-                        <S.SortButton onClick={onClickSort} isLatestSort={isLatestSort}>
+                        <S.SortButton onClick={sortTodoList} isLatestSort={isLatestSort}>
                             <img src={`${process.env.PUBLIC_URL}/img/icon/ic-blue-arrow.svg`} alt="arrow-icon" />
                         </S.SortButton>
                     </div>

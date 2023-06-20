@@ -1,6 +1,6 @@
 
-import Envelop from "../components/common/Envelop";
-import AuthForm from "../components/common/AuthForm";
+import Envelop from '../components/auth/Envelop';
+import AuthForm from '../components/auth/AuthForm';
 import { Navigate, useNavigate } from 'react-router-dom';
 import postSignUp from "../apis/auth/postSignUp";
 import { useState } from "react";
@@ -17,7 +17,7 @@ const SignUp = ({ setIsCompleteSingUp }:SignUpProps) => {
     
     const navigate = useNavigate();
 
-    const onFormSubmit = (email:string, password:string) => {
+    const submitSignUp = (email:string, password:string) => {
         postSignUp(email, password)
         .then(response => {
             switch (response.statusCode) {
@@ -44,7 +44,7 @@ const SignUp = ({ setIsCompleteSingUp }:SignUpProps) => {
             <Card degree={-2} translateX={10} translateY={-7}>
                 <>
                     <S.Welcome className="font-net">Welcome!</S.Welcome>
-                    <AuthForm dataTestid="signup-button" color="#EBFBE8" onFormSubmit={onFormSubmit} message={message}>회원가입</AuthForm>
+                    <AuthForm dataTestid="signup-button" color="#EBFBE8" onFormSubmit={submitSignUp} message={message}>회원가입</AuthForm>
                 </>
             </Card>
         </Envelop>

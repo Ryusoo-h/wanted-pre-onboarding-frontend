@@ -29,7 +29,7 @@ const TodoList = ({ todoList, setTodoList, isLatestSort }:TodoListProps) => {
         setNewTodo(value);
     }
 
-    const onClickAddTodoButton = () => {
+    const addNewTodo = () => {
         checkTokenAndInvoke(() => {
             const token = getToken();
             if (token) {
@@ -100,13 +100,13 @@ const TodoList = ({ todoList, setTodoList, isLatestSort }:TodoListProps) => {
                         onFocus={() => {setIsAddTodoInputFocusing(true)}}
                         onBlur={() => {setIsAddTodoInputFocusing(false)}}
                         onKeyPress={(e) => {onKeyPressEvent(e, "Enter", () => {
-                            onClickAddTodoButton();
+                            addNewTodo();
                             setNewTodo("");
                         })}}
                     />
                 </span>
                 <S.ButtonWrapper>
-                    <S.AddButton data-testid="new-todo-add-button" className="font-net" onClick={onClickAddTodoButton} disabled={newTodo===""}>추가</S.AddButton>
+                    <S.AddButton data-testid="new-todo-add-button" className="font-net" onClick={addNewTodo} disabled={newTodo===""}>추가</S.AddButton>
                 </S.ButtonWrapper>
             </S.TodoAddBox>
         </S.TodoWrapper>

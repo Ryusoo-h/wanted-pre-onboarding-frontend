@@ -17,7 +17,7 @@ export const TodoLi = styled('li')<{checked:boolean, isAddTodoInputFocusing:bool
             filter: opacity(0.4);
             pointer-events: none;
     `}
-    ${props => props.isModify &&
+    ${props => (props.isModify || props.isDelete) && 
         css`
             background-color: #fff;
             filter: opacity(1);
@@ -78,6 +78,7 @@ export const TextWrapper = styled.span`
         font-size: 20px;
         border: none;
         outline: none;
+        word-break: break-all;
     }
 `;
 

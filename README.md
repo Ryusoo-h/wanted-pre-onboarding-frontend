@@ -116,3 +116,28 @@ $ npm start
 
     ![삭제모드 테스트](https://github.com/Ryusoo-h/wanted-pre-onboarding-frontend/assets/67295471/2b7f8928-0e73-4fc5-84bf-c807ad85fca5)
 
+
+### 추가 구현
+[구현 목록 노션 기록](https://www.notion.so/ryu-soohyeon/6-db4198b4cd8041eea643617c9ab407c8?pvs=4#bec260a251b24e3aba5b0335c18ab309)
+
+
+- 리팩토링
+    - [x] 커스텀훅으로 로직과 뷰 분리
+    - [ ] 커스텀훅으로 재사용성 고려하여 수정
+
+- Todo List 정렬 구현
+    - [x] 최근 작성순 / 오래된순 토글 버튼 구현하기
+
+        ![최신순정렬](https://github.com/Ryusoo-h/wanted-pre-onboarding-frontend/assets/67295471/6feceb67-fde1-4957-8929-e424f789d30a)
+        ![최신순정렬-스크롤이동](https://github.com/Ryusoo-h/wanted-pre-onboarding-frontend/assets/67295471/85c36c92-6529-452a-8615-7d78df483bed)
+
+    - [ ] 체크한것만 보기, 체크 안한것만 보기 버튼 구현하기
+
+- [x] 만들지않은 페이지로 이동했을때, 404띄우기
+
+    ![404페이지 구현](https://github.com/Ryusoo-h/wanted-pre-onboarding-frontend/assets/67295471/2ee86e68-b547-441b-ac2d-ba6b809275d4)
+
+- [ ] Todo list 스크롤 UI 수정
+    - 스크롤 가능한 방향에 그림자 표시하기
+- [ ] 회원가입 페이지 → 로그인 페이지 으로 가는 버튼 만들기
+- [ ] 시계 구현하기

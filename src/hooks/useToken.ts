@@ -1,4 +1,5 @@
 
+import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 
 export const useToken = ():{
@@ -10,21 +11,21 @@ export const useToken = ():{
 } => {
     const navigate = useNavigate();
 
-    const getToken = ():string | null => {
+    const getToken = useCallback(():string | null => {
         return localStorage.getItem("access_token");
-    }
+    }, []);
 
-    const isToken = ():boolean => {
-        return getToken() !== null
-    }
+    const isToken = useCallback(():boolean => {
+        return getToken() !== null;
+    }, [getToken])
 
-    const checkTokenAndInvoke = (trueAction?:() => void):void => {
+    const checkTokenAndInvoke = useCallback((trueAction?:() => void):void => {
         if (!isToken()) {
             navigate("/signin");
         } else {
             trueAction && trueAction();
-        }
-    };
+        };
+    }, [isToken, navigate]);
     
     const login = (token:string):void => {
         localStorage.setItem("access_token", token);

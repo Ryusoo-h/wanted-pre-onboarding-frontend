@@ -1,8 +1,8 @@
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { TodoType } from "../../types/todoList";
-import putTodo from "../../apis/todo/putTodo";
 import { useToken } from "../useToken";
+import putTodo from "../../apis/todo/putTodo";
 
 const useModifyTodo = (
     isModify:boolean,
@@ -24,11 +24,11 @@ const useModifyTodo = (
     const [modifiedTodo, setModifiedTodo] = useState<string>('');
     const { getToken } = useToken();
 
-    const onModificationCancel = () => { // 수정 취소
+    const onModificationCancel = useCallback(() => { // 수정 취소
         setModifiedTodoCheck(todo.isCompleted);
         setModifiedTodo(todo.todo);
         setIsModify(false);
-    };
+    }, [setIsModify, todo.isCompleted, todo.todo]);
 
     const onModificationConfirm = () => { // 수정 완료
         const token = getToken();
@@ -47,10 +47,10 @@ const useModifyTodo = (
         setIsModify(false);
     };
 
-    const onChangeModifyInput = (e:React.ChangeEvent<HTMLInputElement>) => {
+    const onChangeModifyInput = useCallback((e:React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
         setModifiedTodo(value);
-    };
+    }, []);
 
     useEffect(() => {
         setModifiedTodo(todo.todo);

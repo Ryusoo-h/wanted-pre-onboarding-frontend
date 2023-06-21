@@ -5,6 +5,7 @@ import onKeyPressEvent from "../../util/onKeyPressEvent";
 import * as S from './TodoList.style';
 import useNewTodoList from "../../hooks/todo/useNewTodoList";
 import useModes from "../../hooks/todo/useModes";
+import React from "react";
 
 type TodoListProps = {
     todoList: TodoType[],
@@ -66,4 +67,4 @@ const TodoList = ({ todoList, setTodoList, isLatestSort }:TodoListProps) => {
     );
 };
 
-export default TodoList;
+export default React.memo(TodoList);

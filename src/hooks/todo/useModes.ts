@@ -1,5 +1,5 @@
 
-import { RefObject, useEffect, useRef, useState } from "react";
+import { RefObject, useCallback, useEffect, useRef, useState } from "react";
 import { useToken } from "../useToken";
 import handleEventWhenExternalClick from "../../util/handleEventWhenExternalClick";
 
@@ -26,22 +26,22 @@ const useModes = ():{
     const [isDelete, setIsDelete] = useState<boolean>(false); // 삭제 모드 결정
     const { checkTokenAndInvoke } = useToken();
 
-    const onMode = (setIsMode:(isMode:boolean) => void) => { // 해당 모드로 변경
+    const onMode = useCallback((setIsMode:(isMode:boolean) => void) => { // 해당 모드로 변경
         setIsMode(true);
         if(thisTodo.current) { // 외부 클릭시 모드 해제
             handleEventWhenExternalClick(thisTodo.current, () => {
                 setIsMode(false);
             });
         };
-    };
+    }, []);
     
-    const onModifyMode = () => {
+    const onModifyMode = useCallback(() => {
         onMode(setIsModify);
-    };
+    }, [onMode]);
 
-    const onDeleteMode = () => {
+    const onDeleteMode = useCallback(() => {
         onMode(setIsDelete);
-    };
+    }, [onMode]);
 
     useEffect(() => {
         checkTokenAndInvoke();

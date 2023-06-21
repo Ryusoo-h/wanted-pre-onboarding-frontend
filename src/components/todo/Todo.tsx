@@ -7,6 +7,7 @@ import * as S from './Todo.style';
 import useModes from '../../hooks/todo/useModes';
 import useModifyTodo from '../../hooks/todo/useModifyTodo';
 import useDeleteTodo from '../../hooks/todo/useDeleteTodo';
+import React from 'react';
 
 type TodoProps = {
     todo: TodoType,
@@ -18,8 +19,10 @@ type TodoProps = {
 }
 const Todo = ({ todo, isAddTodoInputFocusing, isTodoModifing, setIsTodoModifing, todoList, setTodoList }:TodoProps) => {
     const { thisTodo, isModify, setIsModify, isDelete, setIsDelete, onModifyMode, onDeleteMode } = useModes();
+    
     const [ modifiedTodoCheck, setModifiedTodoCheck, modifiedTodo, onModificationCancle, onModificationConfirm, onChangeModifyInput
     ] = useModifyTodo(isModify, setIsModify, todo, todoList, setTodoList, setIsTodoModifing);
+
     const [ onDeletionCancel, onDeletionConfirm 
     ] = useDeleteTodo(isDelete, setIsDelete, todo, todoList, setTodoList, setIsTodoModifing);
 
@@ -96,4 +99,4 @@ const Todo = ({ todo, isAddTodoInputFocusing, isTodoModifing, setIsTodoModifing,
     );
 };
 
-export default Todo;
+export default React.memo(Todo);

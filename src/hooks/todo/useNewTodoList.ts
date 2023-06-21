@@ -1,5 +1,5 @@
 
-import { RefObject, useEffect, useRef, useState } from "react";
+import { RefObject, useCallback, useEffect, useRef, useState } from "react";
 import { useToken } from "../useToken";
 import postNewTodo from "../../apis/todo/postNewTodo";
 import { TodoType } from "../../types/todoList";
@@ -20,10 +20,10 @@ const useNewTodoList = (
     const [ newTodo, setNewTodo ] = useState<string>("");
     const { getToken, checkTokenAndInvoke } = useToken();
     
-    const onChangeAddTodoInput = (e:React.ChangeEvent<HTMLInputElement>):void => {
+    const onChangeAddTodoInput = useCallback((e:React.ChangeEvent<HTMLInputElement>):void => {
         const value = e.target.value;
         setNewTodo(value);
-    }
+    }, []);
 
     const addNewTodo = () => {
         checkTokenAndInvoke(() => {

@@ -1,8 +1,8 @@
 
-import { useEffect } from "react";
-import deleteTodo from "../../apis/todo/deleteTodo";
+import { useCallback, useEffect } from "react";
 import { TodoType } from "../../types/todoList";
 import { useToken } from "../useToken";
+import deleteTodo from "../../apis/todo/deleteTodo";
 
 const useDeleteTodo = (
     isDelete:boolean,
@@ -17,9 +17,9 @@ const useDeleteTodo = (
 ] => {
     const { getToken } = useToken();
 
-    const onDeletionCancel = () => { // 삭제 취소
+    const onDeletionCancel = useCallback(() => { // 삭제 취소
         setIsDelete(false);
-    };
+    }, [setIsDelete]);
 
     const onDeletionConfirm = () => { // 삭제 완료
         const token = getToken();

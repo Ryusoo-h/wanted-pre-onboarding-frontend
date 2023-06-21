@@ -67,7 +67,6 @@ const Todo = ({ todo, isAddingNewTodo, isModifingTodo, setIsModifingTodo, todoLi
                 }
                 {isDelete && // 삭제 모드
                     <input 
-                        data-testid="modify-input"
                         className="text"
                         value={todo.todo}
                         disabled={true}

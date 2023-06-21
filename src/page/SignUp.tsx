@@ -1,40 +1,18 @@
 
 import Envelop from '../components/auth/Envelop';
 import AuthForm from '../components/auth/AuthForm';
-import { Navigate, useNavigate } from 'react-router-dom';
-import postSignUp from "../apis/auth/postSignUp";
-import { useState } from "react";
+import { Navigate } from 'react-router-dom';
 import Card from "../components/common/Card";
 import * as S from "./SignUp.style";
 import { useToken } from "../hooks/useToken";
+import useSignUp from '../hooks/auth/useSignUp';
 
 type SignUpProps = {
-    setIsCompleteSingUp: (isComplete:boolean) => void,
+    showCompletedBadge: (isComplete:boolean) => void,
 }
-const SignUp = ({ setIsCompleteSingUp }:SignUpProps) => {
-    const [message, setMessage] = useState<string>('');
+const SignUp = ({ showCompletedBadge }:SignUpProps) => {
     const { getToken } = useToken();
-    
-    const navigate = useNavigate();
-
-    const submitSignUp = (email:string, password:string) => {
-        postSignUp(email, password)
-        .then(response => {
-            switch (response.statusCode) {
-                case 201:
-                    navigate('/signin');
-                    setIsCompleteSingUp(true);
-                    break;
-                case 400:
-                    setMessage(response.message);
-                    break;
-                default:
-                    console.log("✅postSignUp API 에러: ", response);
-            }
-        }).catch(e => {
-            console.log("✅회원가입 에러: ", e.message);
-        })
-    };
+    const [message, submitSignUp] = useSignUp(showCompletedBadge);
 
     if (getToken()) {
         return <Navigate to="/todo" replace={true} />;

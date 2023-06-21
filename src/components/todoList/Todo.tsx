@@ -1,13 +1,12 @@
 
-import { useEffect, useRef, useState } from 'react';
+
 import { TodoType } from '../../types/todoList';
 import { CancelButton, CheckButton, DeleteButton, DeleteCancelButton, DeleteConfirmButton, ModifyButton } from './buttons';
-import deleteTodo from '../../apis/todo/deleteTodo';
-import putTodo from '../../apis/todo/putTodo';
 import onKeyPressEvent from '../../util/onKeyPressEvent';
 import * as S from './Todo.style';
-import { useToken } from '../../hooks/useToken';
-import handleEventWhenExternalClick from '../../util/handleEventWhenExternalClick';
+import useModes from '../../hooks/todo/useModes';
+import useModifyTodo from '../../hooks/todo/useModifyTodo';
+import useDeleteTodo from '../../hooks/todo/useDeleteTodo';
 
 type TodoProps = {
     todo: TodoType,
@@ -18,95 +17,14 @@ type TodoProps = {
     setTodoList: (todoList:TodoType[]) => void,
 }
 const Todo = ({ todo, isAddTodoInputFocusing, isTodoModifing, setIsTodoModifing, todoList, setTodoList }:TodoProps) => {
-    const [isModify, setIsModify] = useState<boolean>(false); // 수정 모드 결정
-    const [isDelete, setIsDelete] = useState<boolean>(false); // 삭제 모드 결정
-    const [modifiedTodo, setModifiedTodo] = useState<string>('');
-    const [modifiedTodoCheck, setModifiedTodoCheck] = useState<boolean>(false);
-    const isFirstRender = useRef<boolean>(true); // 처음 렌더링 시, checkBox 수정 업데이트 되는것을 방지하기위한 플래그
-    const thisTodo = useRef<HTMLLIElement>(null);
-    const { getToken } = useToken();
-
-    const onClickCancelButton = () => { // 수정 취소
-        setModifiedTodoCheck(todo.isCompleted);
-        setModifiedTodo(todo.todo);
-        setIsModify(false);
-    }
-    const onClickCheckButton = () => { // 수정 완료
-        const token = getToken();
-        const id = todo.id;
-        if (token) {
-            putTodo(token, id, modifiedTodo, modifiedTodoCheck)
-            .then ( response => {
-                if (!Array.isArray(response)) {
-                    const newTodoList = todoList.map(todo => todo.id === id ? response : todo);
-                    setTodoList(newTodoList);
-                }
-            }).catch ( e => {
-                console.log("✅todo 수정 에러: ", e)
-            });
-        }
-        setIsModify(false);
-    }
-    const onClickModifyButton = () => { // 수정 모드로 변경
-        setIsModify(true);
-        if(thisTodo.current) {
-            handleEventWhenExternalClick(thisTodo.current, () => {
-                setIsModify(false);
-            });
-        };
-    }
-    const onClickDeleteButton = () => { // 삭제 모드로 변경
-        setIsDelete(true);
-        if(thisTodo.current) {
-            handleEventWhenExternalClick(thisTodo.current, () => {
-                setIsDelete(false);
-            });
-        };
-    };
-    const onClickDeleteCancelButton = () => { // 삭제 취소
-        setIsDelete(false);
-    }
-    const onClickDeleteConfirmButton = () => { // 삭제 확정
-        const token = getToken();
-        const id = todo.id;
-        if (token) {
-            deleteTodo(token, id)
-            .then ( response => {
-                if (Array.isArray(response)) {
-                    const newTodoList = todoList.filter(todo => todo.id !== id);
-                    setTodoList(newTodoList);
-                }
-            }).catch ( e => {
-                console.log("✅todo 삭제 에러: ", e);
-            })
-        }
-        setIsDelete(false);
-    }
-
-    const onChangeModifyInput = (e:React.ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value;
-        setModifiedTodo(value);
-    }
-
-    useEffect(() => {
-        setModifiedTodo(todo.todo);
-        setModifiedTodoCheck(todo.isCompleted);
-    },[]);
-
-    useEffect(() => {
-        setIsTodoModifing(isModify || isDelete);
-    },[isModify, isDelete])
-
-    useEffect(() => {
-        if (isFirstRender.current) {
-            isFirstRender.current = false;
-        } else if (!isModify && modifiedTodoCheck !== todo.isCompleted) {
-            onClickCheckButton();
-        }
-    }, [modifiedTodoCheck]);
+    const { thisTodo, isModify, setIsModify, isDelete, setIsDelete, onModifyMode, onDeleteMode } = useModes();
+    const [ modifiedTodoCheck, setModifiedTodoCheck, modifiedTodo, onModificationCancle, onModificationConfirm, onChangeModifyInput
+    ] = useModifyTodo(isModify, setIsModify, todo, todoList, setTodoList, setIsTodoModifing);
+    const [ onDeletionCancel, onDeletionConfirm 
+    ] = useDeleteTodo(isDelete, setIsDelete, todo, todoList, setTodoList, setIsTodoModifing);
 
     return (
-        <S.TodoLi 
+        <S.TodoLi
             ref={thisTodo}
             className="flex"
             checked={todo.isCompleted}
@@ -138,7 +56,7 @@ const Todo = ({ todo, isAddTodoInputFocusing, isTodoModifing, setIsTodoModifing,
                         value={modifiedTodo}
                         onChange={(e) => {onChangeModifyInput(e)}} 
                         onKeyPress={(e) => {onKeyPressEvent(e, "Enter", () => {
-                            onClickCheckButton();
+                            onModificationConfirm();
                         })}}
                     />
                 }
@@ -151,26 +69,26 @@ const Todo = ({ todo, isAddTodoInputFocusing, isTodoModifing, setIsTodoModifing,
                     />
                 }
                 {!isModify && !isDelete &&
-                    <label htmlFor={`checkbox${todo.id}`} className="text" onClick={(e)=> e.preventDefault()}>{todo.todo}</label>
+                    <label htmlFor={`checkbox${todo.id}`} className="text" onClick={(e)=> e.preventDefault()}>{modifiedTodo}</label>
                 }
             </S.TextWrapper>
             <S.ButtonWrapper className="flex">
                 {isModify &&
                     <> {/* 수정모드 버튼들 */}
-                        <CancelButton dataTestid="cancel-button" onClickButton={onClickCancelButton} />
-                        <CheckButton dataTestid="submit-button" onClickButton={onClickCheckButton} disabled={modifiedTodo===''} />
+                        <CancelButton dataTestid="cancel-button" onClickButton={onModificationCancle} />
+                        <CheckButton dataTestid="submit-button" onClickButton={onModificationConfirm} disabled={modifiedTodo===''} />
                     </>
                 }
                 {isDelete &&
                     <> {/* 삭제모드 버튼들 */}
-                        <DeleteCancelButton dataTestid="delete-cancel-button" onClickButton={onClickDeleteCancelButton} />
-                        <DeleteConfirmButton dataTestid="delete-button" onClickButton={onClickDeleteConfirmButton} disabled={modifiedTodo===''} />
+                        <DeleteCancelButton dataTestid="delete-cancel-button" onClickButton={onDeletionCancel} />
+                        <DeleteConfirmButton dataTestid="delete-button" onClickButton={onDeletionConfirm} disabled={modifiedTodo===''} />
                     </>
                 }
                 {!isModify && !isDelete &&
                     <> {/* 기본 버튼들 */}
-                        <ModifyButton dataTestid="modify-button" onClickButton={onClickModifyButton} />
-                        <DeleteButton dataTestid="delete-mode-button" onClickButton={onClickDeleteButton} />
+                        <ModifyButton dataTestid="modify-button" onClickButton={onModifyMode} />
+                        <DeleteButton dataTestid="delete-mode-button" onClickButton={onDeleteMode} />
                     </>
                 }
             </S.ButtonWrapper>

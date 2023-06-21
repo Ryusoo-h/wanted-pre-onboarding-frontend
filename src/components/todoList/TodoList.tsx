@@ -1,12 +1,10 @@
 import Todo from "./Todo";
 import { TodoType } from '../../types/todoList';
 import Title from "../common/Title";
-import { useEffect, useRef, useState } from "react";
-import postNewTodo from "../../apis/todo/postNewTodo";
-import { useToken } from "../../hooks/useToken";
 import onKeyPressEvent from "../../util/onKeyPressEvent";
 import * as S from './TodoList.style';
-import { useNavigate } from "react-router-dom";
+import useNewTodoList from "../../hooks/todo/useNewTodoList";
+import useModes from "../../hooks/todo/useModes";
 
 type TodoListProps = {
     todoList: TodoType[],
@@ -15,54 +13,9 @@ type TodoListProps = {
 }
 
 const TodoList = ({ todoList, setTodoList, isLatestSort }:TodoListProps) => {
-    const [ isAddTodoInputFocusing, setIsAddTodoInputFocusing ] = useState<boolean>(false);
-    const [ isTodoModifing, setIsTodoModifing ] = useState<boolean>(false);
-    const [ newTodo, setNewTodo ] = useState<string>("");
-    const todoListEl = useRef<HTMLUListElement>(null);
-    const prevTodoListElHeight = useRef<number>(0);
-    const { getToken, isToken, checkTokenAndInvoke } = useToken();
-    
-    const navigate = useNavigate();
+    const { isAddTodoInputFocusing, setIsAddTodoInputFocusing, isTodoModifing, setIsTodoModifing } = useModes();
+    const { todoListEl, newTodo, setNewTodo, onChangeAddTodoInput, addNewTodo } = useNewTodoList(todoList, setTodoList, isLatestSort);
 
-    const onChangeAddTodoInput = (e:React.ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value;
-        setNewTodo(value);
-    }
-
-    const addNewTodo = () => {
-        checkTokenAndInvoke(() => {
-            const token = getToken();
-            if (token) {
-                postNewTodo(token, newTodo)
-                .then ( response => {
-                    if (!Array.isArray(response)) {
-                        if (isLatestSort) {
-                            setTodoList([response, ...todoList]);
-                        } else {
-                            setTodoList(todoList.concat(response));
-                        }
-                        setNewTodo("");
-                    }
-                }).catch ( e => {
-                    console.log("✅새 Todo 등록 에러: ", e);
-                })
-            }
-        });
-    }
-
-    useEffect(() => {
-        isToken() || navigate("/signin");
-    }, [isAddTodoInputFocusing, isTodoModifing]);
-
-    useEffect(() => {
-        // todoList에 새 todo가 추가되면 스크롤을 가장아래로 이동시킴
-        if (todoListEl.current && prevTodoListElHeight.current < (todoListEl.current?.scrollHeight || 0)) {
-            const { scrollHeight, clientHeight } = todoListEl.current;
-            todoListEl.current.scrollTop = isLatestSort ? 0 : scrollHeight - clientHeight;
-        }
-        prevTodoListElHeight.current = todoListEl.current?.scrollHeight || 0;
-    }, [todoList]);
-    
     return (
         <S.TodoWrapper>
             <Title />
@@ -74,7 +27,7 @@ const TodoList = ({ todoList, setTodoList, isLatestSort }:TodoListProps) => {
             <S.TodoListUl ref={todoListEl}>
                 {todoList.map((todo) => {
                     return (
-                        <Todo 
+                        <Todo
                             key={todo.id}
                             todo={todo}
                             isAddTodoInputFocusing={isAddTodoInputFocusing}

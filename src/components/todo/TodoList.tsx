@@ -4,8 +4,8 @@ import Title from "../common/Title";
 import onKeyPressEvent from "../../util/onKeyPressEvent";
 import * as S from './TodoList.style';
 import useNewTodoList from "../../hooks/todo/useNewTodoList";
-import useModes from "../../hooks/todo/useModes";
 import React from "react";
+import useTodosMode from "../../hooks/todo/useTodosMode";
 
 type TodoListProps = {
     todoList: TodoType[],
@@ -14,13 +14,14 @@ type TodoListProps = {
 }
 
 const TodoList = ({ todoList, setTodoList, isLatestSort }:TodoListProps) => {
-    const { isAddTodoInputFocusing, setIsAddTodoInputFocusing, isTodoModifing, setIsTodoModifing } = useModes();
-    const { todoListEl, newTodo, setNewTodo, onChangeAddTodoInput, addNewTodo } = useNewTodoList(todoList, setTodoList, isLatestSort);
+    const [isAddingNewTodo, setIsAddingNewTodo] = useTodosMode();// 새 todo 추가중 === true
+    const [isModifingTodo, setIsModifingTodo] = useTodosMode();// todo 수정모드 === true
+    const {todoListEl, newTodo, setNewTodo, onChangeAddTodoInput, addNewTodo} = useNewTodoList(todoList, setTodoList, isLatestSort);
 
     return (
         <S.TodoWrapper>
             <Title />
-            <S.TodoTopBox className="flex" isTodoModifing={isTodoModifing}>
+            <S.TodoTopBox className="flex" isModifingTodo={isModifingTodo}>
                 <S.CheckWrapper />
                 <span className="text">할일</span>
                 <S.ButtonWrapper />
@@ -31,16 +32,16 @@ const TodoList = ({ todoList, setTodoList, isLatestSort }:TodoListProps) => {
                         <Todo
                             key={todo.id}
                             todo={todo}
-                            isAddTodoInputFocusing={isAddTodoInputFocusing}
-                            isTodoModifing={isTodoModifing}
-                            setIsTodoModifing={setIsTodoModifing}
+                            isAddingNewTodo={isAddingNewTodo}
+                            isModifingTodo={isModifingTodo}
+                            setIsModifingTodo={setIsModifingTodo}
                             todoList={todoList}
                             setTodoList={setTodoList}
                         />
                     )
                 })}
             </S.TodoListUl>
-            <S.TodoAddBox className="flex" isAddTodoInputFocusing={isAddTodoInputFocusing} isTodoModifing={isTodoModifing}>
+            <S.TodoAddBox className="flex" isAddingNewTodo={isAddingNewTodo} isModifingTodo={isModifingTodo}>
                 <S.CheckWrapper />
                 <span className="text flex">
                     <label htmlFor="add-todo" style={{display: "none"}}>TODO 추가하기</label>
@@ -51,8 +52,8 @@ const TodoList = ({ todoList, setTodoList, isLatestSort }:TodoListProps) => {
                         placeholder="새 할일 입력하기"
                         value={newTodo}
                         onChange={(e) => {onChangeAddTodoInput(e)}}
-                        onFocus={() => {setIsAddTodoInputFocusing(true)}}
-                        onBlur={() => {setIsAddTodoInputFocusing(false)}}
+                        onFocus={() => {setIsAddingNewTodo(true)}}
+                        onBlur={() => {setIsAddingNewTodo(false)}}
                         onKeyPress={(e) => {onKeyPressEvent(e, "Enter", () => {
                             addNewTodo();
                             setNewTodo("");

@@ -26,14 +26,14 @@ export const ButtonWrapper = styled.div`
     align-items: center;
 `;
 
-export const TodoBoxCommonStyle = styled('div')<{isTodoModifing:boolean}>`
+export const TodoBoxCommonStyle = styled('div')<{isModifingTodo:boolean}>`
     position: relative;
     z-index: 3;
     width: 100%;
     align-items: stretch;
     font-size: 20px;
     border-bottom: solid 3px var(--light-green);
-    ${props => (props.isTodoModifing) &&
+    ${props => (props.isModifingTodo) &&
         css`
             z-index: 1;
             pointer-events: none;
@@ -44,7 +44,7 @@ export const TodoBoxCommonStyle = styled('div')<{isTodoModifing:boolean}>`
     }
 `;
 
-export const TodoTopBox = styled(TodoBoxCommonStyle)<{isTodoModifing:boolean}>`
+export const TodoTopBox = styled(TodoBoxCommonStyle)<{isModifingTodo:boolean}>`
     margin-top: 20px;
     height: 54px;
     background-color: #FFFBF8;
@@ -71,18 +71,18 @@ export const TodoListUl = styled.ul`
     }
 `;
 
-export const TodoAddBox = styled(TodoBoxCommonStyle)<{isAddTodoInputFocusing:boolean, isTodoModifing:boolean}>`
+export const TodoAddBox = styled(TodoBoxCommonStyle)<{isAddingNewTodo:boolean, isModifingTodo:boolean}>`
     height: 52px;
     background-color: #fff;
     border-top: solid 1px var(--light-green);
     transform: translateY(-32px);
     transition: box-shadow 0.2s ease-in-out;
-    ${props => props.isAddTodoInputFocusing &&
+    ${props => props.isAddingNewTodo &&
         css`
             z-index: 4;
             box-shadow: 0px 2px 12px rgba(110, 106, 150, 0.5);
     `}
-    ${props => (props.isTodoModifing) &&
+    ${props => (props.isModifingTodo) &&
         css`
             filter: opacity(0.4);
     `}

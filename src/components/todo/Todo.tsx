@@ -4,35 +4,37 @@ import { TodoType } from '../../types/todoList';
 import { CancelButton, CheckButton, DeleteButton, DeleteCancelButton, DeleteConfirmButton, ModifyButton } from './buttons';
 import onKeyPressEvent from '../../util/onKeyPressEvent';
 import * as S from './Todo.style';
-import useModes from '../../hooks/todo/useModes';
 import useModifyTodo from '../../hooks/todo/useModifyTodo';
 import useDeleteTodo from '../../hooks/todo/useDeleteTodo';
-import React from 'react';
+import React, { useRef } from 'react';
+import useOnMode from '../../hooks/todo/useOnMode';
 
 type TodoProps = {
     todo: TodoType,
-    isAddTodoInputFocusing: boolean,
-    isTodoModifing: boolean,
-    setIsTodoModifing: (isTodoModifing:boolean) => void,
+    isAddingNewTodo: boolean,
+    isModifingTodo: boolean,
+    setIsModifingTodo: (isTodoModifing:boolean) => void,
     todoList: TodoType[],
     setTodoList: (todoList:TodoType[]) => void,
 }
-const Todo = ({ todo, isAddTodoInputFocusing, isTodoModifing, setIsTodoModifing, todoList, setTodoList }:TodoProps) => {
-    const { thisTodo, isModify, setIsModify, isDelete, setIsDelete, onModifyMode, onDeleteMode } = useModes();
+const Todo = ({ todo, isAddingNewTodo, isModifingTodo, setIsModifingTodo, todoList, setTodoList }:TodoProps) => {
+    const thisTodo = useRef<HTMLLIElement>(null);
+    const [ isModify, setIsModify, onModifyMode] = useOnMode(thisTodo);
+    const [ isDelete, setIsDelete, onDeleteMode] = useOnMode(thisTodo);
     
     const [ modifiedTodoCheck, setModifiedTodoCheck, modifiedTodo, onModificationCancle, onModificationConfirm, onChangeModifyInput
-    ] = useModifyTodo(isModify, setIsModify, todo, todoList, setTodoList, setIsTodoModifing);
+    ] = useModifyTodo(isModify, setIsModify, todo, todoList, setTodoList, setIsModifingTodo);
 
     const [ onDeletionCancel, onDeletionConfirm 
-    ] = useDeleteTodo(isDelete, setIsDelete, todo, todoList, setTodoList, setIsTodoModifing);
+    ] = useDeleteTodo(isDelete, setIsDelete, todo, todoList, setTodoList, setIsModifingTodo);
 
     return (
         <S.TodoLi
             ref={thisTodo}
             className="flex"
             checked={todo.isCompleted}
-            isAddTodoInputFocusing={isAddTodoInputFocusing}
-            isTodoModifing={isTodoModifing}
+            isAddingNewTodo={isAddingNewTodo}
+            isModifingTodo={isModifingTodo}
             isModify={isModify}
             isDelete={isDelete}
         >

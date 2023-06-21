@@ -1,7 +1,7 @@
 
 import styled, { css } from 'styled-components';
 
-export const TodoLi = styled('li')<{checked:boolean, isAddTodoInputFocusing:boolean, isTodoModifing:boolean, isModify:boolean, isDelete:boolean}>`
+export const TodoLi = styled('li')<{checked:boolean, isAddingNewTodo:boolean, isModifingTodo:boolean, isModify:boolean, isDelete:boolean}>`
     border-bottom: solid 1px var(--light-green);
     box-sizing: border-box;
     min-height: 50px;
@@ -12,7 +12,7 @@ export const TodoLi = styled('li')<{checked:boolean, isAddTodoInputFocusing:bool
         css`
             background-color: #EBFBE8;
     `}
-    ${props => (props.isAddTodoInputFocusing || props.isTodoModifing) &&
+    ${props => (props.isAddingNewTodo || props.isModifingTodo) &&
         css`
             filter: opacity(0.4);
             pointer-events: none;

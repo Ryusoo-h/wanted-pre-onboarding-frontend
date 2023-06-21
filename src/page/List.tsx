@@ -1,6 +1,6 @@
 
 import Container from '../components/common/Container';
-import TodoList from '../components/todoList/TodoList';
+import TodoList from '../components/todo/TodoList';
 import * as S from './List.style';
 import { useToken } from '../hooks/useToken';
 import useTodoList from '../hooks/todo/useTodoList';

@@ -1,5 +1,7 @@
 
-import { useState, useEffect } from 'react';
+
+import { useState } from 'react';
+import useIsAllValid from '../../hooks/auth/useIsAllValid';
 import * as S from './AthForm.style';
 
 type AuthFormProps = {
@@ -15,33 +17,17 @@ const AuthForm = ({ dataTestid, children, onFormSubmit, message, ...rest }:AuthF
     const [ password, setPassword ] = useState<string>('');
     const [ isEmailValid, setIsEmailValid ] = useState<boolean>(false);
     const [ isPasswordValid, setIsPasswordValid ] = useState<boolean>(false);
-    const [ isAllValid, setIsAllValid ] = useState<boolean>(false);
-
-    useEffect(() => {
-        setIsAllValid(isEmailValid && isPasswordValid);
-    }, [isEmailValid, isPasswordValid])
-
-    const onChangeEmailInput = (e:React.ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value;
-        setEmail(value);
-        setIsEmailValid(value.includes('@'));
-    }
-    const onChangePasswordInput = (e:React.ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value;
-        setPassword(value);
-        setIsPasswordValid(value.length >= 8);
-    }
-
+    const [ isAllValid ] = useIsAllValid([isEmailValid, isPasswordValid]);
     return(
         <S.Form>
             <S.AuthFormWrapper color={rest.color}>
                 <label htmlFor="email">이메일</label>
                 <input data-testid="email-input" type="text" id="email" className="font-basic" autoFocus={true} 
-                    value={email} onChange={(e) => {onChangeEmailInput(e)}}
+                    value={email} onChange={(e) => {setEmail(e.target.value); setIsEmailValid(e.target.value.includes('@'));}}
                 />
                 <label htmlFor="new-password">비밀번호</label>
                 <input data-testid="password-input" type="password" id="new-password" className="font-basic" 
-                    value={password}  onChange={(e) => {onChangePasswordInput(e)}}
+                    value={password}  onChange={(e) => {setPassword(e.target.value); setIsPasswordValid(e.target.value.length >= 8);}}
                 />
             </S.AuthFormWrapper>
                 <S.AlertWrapper>

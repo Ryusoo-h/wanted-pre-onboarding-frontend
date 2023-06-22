@@ -12,7 +12,7 @@ type SignUpProps = {
 }
 const SignUp = ({ showCompletedBadge }:SignUpProps) => {
     const { getToken } = useToken();
-    const [message, submitSignUp] = useSignUp(showCompletedBadge);
+    const [ message, submitSignUp ] = useSignUp(showCompletedBadge);
 
     if (getToken()) {
         return <Navigate to="/todo" replace={true} />;

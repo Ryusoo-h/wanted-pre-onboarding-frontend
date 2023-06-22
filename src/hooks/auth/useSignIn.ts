@@ -8,7 +8,7 @@ const useSignIn = (
 ):[
     string, (email:string, password:string) => void
 ] => {
-    const [message, setMessage] = useState<string>("");
+    const [ message, setMessage ] = useState<string>("");
 
     const submitSignIn = (email:string, password:string) => {
         postSignIn(email, password)
@@ -36,7 +36,7 @@ const useSignIn = (
         });
     };
 
-    return [message, submitSignIn]
+    return [ message, submitSignIn ]
 };
 
 export default useSignIn;

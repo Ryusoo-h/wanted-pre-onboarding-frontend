@@ -14,9 +14,9 @@ type TodoListProps = {
 }
 
 const TodoList = ({ todoList, setTodoList, isLatestSort }:TodoListProps) => {
-    const [isAddingNewTodo, setIsAddingNewTodo] = useTodosMode();// 새 todo 추가중 === true
-    const [isModifingTodo, setIsModifingTodo] = useTodosMode();// todo 수정모드 === true
-    const {todoListEl, newTodo, setNewTodo, onChangeAddTodoInput, addNewTodo} = useNewTodoList(todoList, setTodoList, isLatestSort);
+    const [ isAddingNewTodo, setIsAddingNewTodo ] = useTodosMode();// 새 todo 추가중 === true
+    const [ isModifingTodo, setIsModifingTodo ] = useTodosMode();// todo 수정모드 === true
+    const { todoListEl, newTodo, setNewTodo, onChangeAddTodoInput, addNewTodo } = useNewTodoList(todoList, setTodoList, isLatestSort);
 
     return (
         <S.TodoWrapper>

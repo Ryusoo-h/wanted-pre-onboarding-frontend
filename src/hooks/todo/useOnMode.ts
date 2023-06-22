@@ -7,7 +7,7 @@ import handleEventWhenExternalClick from "../../util/handleEventWhenExternalClic
 const useOnMode = (thisTodo:RefObject<HTMLLIElement>):[
     boolean, (isAction:boolean) => void, () => void
 ] => {
-    const [isAction, setIsAction] = useState<boolean>(false); // 액션에 따른 모드 결정 (액션 : 수정, 삭제)
+    const [ isAction, setIsAction ] = useState<boolean>(false); // 액션에 따른 모드 결정 (액션 : 수정, 삭제)
 
     const onMode = useCallback(() => { // 해당 모드로 변경
         setIsAction(true);
@@ -18,7 +18,7 @@ const useOnMode = (thisTodo:RefObject<HTMLLIElement>):[
         };
     }, [thisTodo]);
 
-    return [isAction, setIsAction, onMode];
+    return [ isAction, setIsAction, onMode ];
 };
 
 export default useOnMode;

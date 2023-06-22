@@ -20,8 +20,8 @@ const useModifyTodo = (
     onChangeModifyInput:(e:React.ChangeEvent<HTMLInputElement>) => void,
 ] => {
     const isFirstRender = useRef<boolean>(true); // 처음 렌더링 시, checkBox 수정 업데이트 되는것을 방지하기위한 플래그
-    const [modifiedTodoCheck, setModifiedTodoCheck] = useState<boolean>(false);
-    const [modifiedTodo, setModifiedTodo] = useState<string>('');
+    const [ modifiedTodoCheck, setModifiedTodoCheck ] = useState<boolean>(false);
+    const [ modifiedTodo, setModifiedTodo ] = useState<string>('');
     const { getToken } = useToken();
 
     const onModificationCancel = useCallback(() => { // 수정 취소

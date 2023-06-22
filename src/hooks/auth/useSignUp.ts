@@ -6,7 +6,7 @@ import postSignUp from "../../apis/auth/postSignUp";
 const useSignUp = (setIsComplete:(isComplete:boolean) => void):[
     string, (email:string, password:string) => void
 ] => {
-    const [message, setMessage] = useState<string>('');
+    const [ message, setMessage ] = useState<string>('');
     const navigate = useNavigate();
 
     const submitSignUp = (email:string, password:string) => {
@@ -27,7 +27,7 @@ const useSignUp = (setIsComplete:(isComplete:boolean) => void):[
             console.log("✅회원가입 에러: ", e.message);
         })
     };
-    return [message, submitSignUp];
+    return [ message, submitSignUp ];
 };
 
 export default useSignUp;

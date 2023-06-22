@@ -5,7 +5,7 @@ const useCompletedBadge = ():{
     showCompletedBadge:() => void,
     hideCompletedBadge:() => void,
 } => {
-    const [isShowCompletedBadge, setIsShowCompletedBadge] = useState<boolean>(false);
+    const [ isShowCompletedBadge, setIsShowCompletedBadge ] = useState<boolean>(false);
     
     const showCompletedBadge = () => {
         setIsShowCompletedBadge(true);

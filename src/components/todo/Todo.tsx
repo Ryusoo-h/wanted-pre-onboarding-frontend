@@ -5,9 +5,9 @@ import { CancelButton, CheckButton, DeleteButton, DeleteCancelButton, DeleteConf
 import onKeyPressEvent from '../../util/onKeyPressEvent';
 import * as S from './Todo.style';
 import useModifyTodo from '../../hooks/todo/useModifyTodo';
-import useDeleteTodo from '../../hooks/todo/useDeleteTodo';
 import React, { useRef } from 'react';
 import useOnMode from '../../hooks/todo/useOnMode';
+import useDeleteTodo from '../../hooks/todo/useDeleteTodo';
 
 type TodoProps = {
     todo: TodoType,
@@ -19,8 +19,8 @@ type TodoProps = {
 }
 const Todo = ({ todo, isAddingNewTodo, isModifingTodo, setIsModifingTodo, todoList, setTodoList }:TodoProps) => {
     const thisTodo = useRef<HTMLLIElement>(null);
-    const [ isModify, setIsModify, onModifyMode] = useOnMode(thisTodo);
-    const [ isDelete, setIsDelete, onDeleteMode] = useOnMode(thisTodo);
+    const [ isModify, setIsModify, onModifyMode ] = useOnMode(thisTodo);
+    const [ isDelete, setIsDelete, onDeleteMode ] = useOnMode(thisTodo);
     
     const [ modifiedTodoCheck, setModifiedTodoCheck, modifiedTodo, onModificationCancle, onModificationConfirm, onChangeModifyInput
     ] = useModifyTodo(isModify, setIsModify, todo, todoList, setTodoList, setIsModifingTodo);

@@ -13,7 +13,7 @@ type SingInProps = {
 
 const SignIn = ({ isCompleteSingUp, hideCompletedBadge }:SingInProps) => {
     const { isToken, login } = useToken();
-    const [message, submitSignIn] = useSignIn(hideCompletedBadge, login);
+    const [ message, submitSignIn ] = useSignIn(hideCompletedBadge, login);
 
     if (isToken()) {
         return <Navigate to="/todo" replace={true} />;

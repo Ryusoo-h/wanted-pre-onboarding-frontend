@@ -11,11 +11,11 @@ type AuthFormProps = {
 }
 
 const AuthForm = ({ dataTestid, children, onFormSubmit, message, ...rest }:AuthFormProps) => {
-    const [email, setEmail] = useState<string>('');
-    const [password, setPassword] = useState<string>('');
-    const [isEmailValid, setIsEmailValid] = useState<boolean>(false);
-    const [isPasswordValid, setIsPasswordValid] = useState<boolean>(false);
-    const [isAllValid, setIsAllValid] = useState<boolean>(false);
+    const [ email, setEmail ] = useState<string>('');
+    const [ password, setPassword ] = useState<string>('');
+    const [ isEmailValid, setIsEmailValid ] = useState<boolean>(false);
+    const [ isPasswordValid, setIsPasswordValid ] = useState<boolean>(false);
+    const [ isAllValid, setIsAllValid ] = useState<boolean>(false);
 
     useEffect(() => {
         setIsAllValid(isEmailValid && isPasswordValid);

@@ -12,7 +12,7 @@ const useTodosMode = ():[ boolean, (isDoingMode:boolean) => void ] => {
         checkTokenAndInvoke();
     }, [isDoingMode]);
 
-    return [isDoingMode, setIsDoingMode];
+    return [ isDoingMode, setIsDoingMode ];
     
 };
 

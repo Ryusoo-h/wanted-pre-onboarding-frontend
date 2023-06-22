@@ -37,5 +37,5 @@ export const useToken = ():{
         navigate("/signin");
     }
     
-    return {getToken, isToken, checkTokenAndInvoke, login, logout};
+    return { getToken, isToken, checkTokenAndInvoke, login, logout };
 };

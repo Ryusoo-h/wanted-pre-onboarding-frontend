@@ -12,7 +12,7 @@ type SignUpProps = {
 }
 const SignUp = ({ showCompletedBadge }:SignUpProps) => {
     const { getToken } = useToken();
-    const [ message, submitSignUp ] = useSignUp(showCompletedBadge);
+    const [ submitAlert, submitSignUp ] = useSignUp(showCompletedBadge);
 
     if (getToken()) {
         return <Navigate to="/todo" replace={true} />;
@@ -22,7 +22,7 @@ const SignUp = ({ showCompletedBadge }:SignUpProps) => {
             <Card degree={-2} translateX={10} translateY={-7}>
                 <>
                     <S.Welcome className="font-net">Welcome!</S.Welcome>
-                    <AuthForm dataTestid="signup-button" color="#EBFBE8" onFormSubmit={submitSignUp} message={message}>회원가입</AuthForm>
+                    <AuthForm dataTestid="signup-button" color="#EBFBE8" onFormSubmit={submitSignUp} submitAlert={submitAlert}>회원가입</AuthForm>
                 </>
             </Card>
         </Envelop>

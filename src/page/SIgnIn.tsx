@@ -13,7 +13,7 @@ type SingInProps = {
 
 const SignIn = ({ isCompleteSingUp, hideCompletedBadge }:SingInProps) => {
     const { isToken, login } = useToken();
-    const [ message, submitSignIn ] = useSignIn(hideCompletedBadge, login);
+    const [ submitAlert, submitSignIn ] = useSignIn(hideCompletedBadge, login);
 
     if (isToken()) {
         return <Navigate to="/todo" replace={true} />;
@@ -24,7 +24,7 @@ const SignIn = ({ isCompleteSingUp, hideCompletedBadge }:SingInProps) => {
                 {isCompleteSingUp &&
                     <S.Badge src={`${process.env.PUBLIC_URL}/img/completeSignUp.svg`} alt="complete-Sign-Up-badge" />
                 }
-                <AuthForm dataTestid="signin-button" onFormSubmit={submitSignIn} message={message}>로그인</AuthForm>
+                <AuthForm dataTestid="signin-button" onFormSubmit={submitSignIn} submitAlert={submitAlert}>로그인</AuthForm>
                 <S.LinkToSignUp to="/signup" className="font-net">회원가입</S.LinkToSignUp>
             </>
         </Envelop>
